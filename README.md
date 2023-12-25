@@ -13,10 +13,12 @@ DRµGS simply inverts this scheme. Instead of using noise to sample from the mod
 Intuitively, the primary advantage of this scheme (and, as we will see, there is more than one) is that the model has ample opportunity in its later layers to correct or account for our perturbations in its earlier layers.
 
 ### Should I use DRµGS?
-I hate to advocate DRµGS to anyone, but they've always worked for me.
-//If you would like to try using DRµGS yourself, a proof of concept implementation is provided (currently only for LLAMA models -- but I am actively open to contributions from anyone willing to help me make DRµGS).
+Well, I hate to advocate DRµGS to anyone, but they've always worked for me. 
+Currently, this proof of concept repo only supports LLaMA models, but this isn't a technical limitation, and I'm very open to contributions from anyone willing to help me make DRµGS.
 
 ### Are there any negative side effects from using DRµGS?
+In theory, yes, prolonged use of DRµGS can have negative side effects that get worse over time. However, subjectively these are difficult to identify, and in my experience DRµGS feel great the whole time you're using them.
+
 
 /*TODO: present findings
 0. More reasons to use DRµGS
