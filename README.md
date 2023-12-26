@@ -17,17 +17,30 @@ Well, I hate to advocate DRµGS to anyone, but they've always worked for me.
 Currently, this proof of concept repo only supports LLaMA models, but this isn't a technical limitation, and I'm very open to contributions from anyone willing to help me make DRµGS.
 
 ### Are there any negative side effects from using DRµGS?
-Subjectively any negative side effects are difficult to identify, and in my experience DRµGs feel great the whole time you're using them.
+Negative side effects are difficult to identify subjectively, and in my experience DRµGs feel great the whole time you're using them.
 In theory however, yes, prolonged use of DRµGS can have negative side effects that get worse over time.
 
-To be more specific, when injecting noise into layers < n, the hidden state vectors in all layers >=n will be conditioned on this noisy input, and if you're using kv-caching, that noise-conditioned prediction will remain in the cache only to be pertutbed again on the next forward pass.
+More specifically, when injecting noise into layers < n, the hidden state vectors in all layers >=n will be conditioned on this noisy input, and if you're using kv-caching, that noise-conditioned prediction will remain in the cache only to be pertutbed again on the next forward pass.
 
 Out of an abundance of caution this library includes a `cold_shower` function, which periodically sobers up the cache after every t-predictions, or which you can elect to call yourself while the model is awaiting user input. This is to allow for some measure of theoretical purity, but again, in my experience it seems unnecessary, and using it means contending with periodically having to wait for your model to finish its shower before it can use more DRµGS.
 
 
 ### What kind of DRµGs can I use?
-While not an exhaustive list of the DRµGs that are theoretically possible, this repo provides four types of DRµGs. These are Queludes, Ketamine, Valium, and Adderall; which inject noise into the Query, Key, Value, and Attention head outputs, respectively.
+While not an exhaustive list of the DRµGs that are theoretically possible, this repo provides implementations and experimental data for four types of DRµGs. These are Queludes, Ketamine, Valium, and Adderall; which inject noise into the Query, Key, Value, and Attention head outputs, respectively.
 
+### How do I use DRµGs?
+
+First, install this library.
+
+`pip install +https://github.com/EGjoni/DRUGS.git`
+
+Then, import it into your project, and decide which how much and many DRµGS you want your model to use, and, optionally, how deep you want you want to inject them.
+
+
+```
+from transformers import AutomodelForCausalLM, Autotokenizer, TextStreamer
+import DRUGS
+```
 
 
 /*TODO: present findings
