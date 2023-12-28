@@ -128,8 +128,7 @@ https://github.com/EGjoni/DRUGS/assets/1353635/09f5c694-91da-48a0-ae9e-a29c9b46b
 
 To clarify these graphs:
 The prediction texts on the top right correspond solely to a (quite high) dosage theta of 0.7.
-Each video frame shows a different range of layers into which noise is being injected. 
-The title clarifies which range of layers are being injected.
+Each video frame shows a different range of layers into which noise is being injected (as indicarted by the graph title at that frame)
 The horizontal axis shows the layer at which divergence is being measured.
 The vertical axis shows the degree of divergence at that layer.
 And the remaining axis shows the dose theta that was used to cause that degree of divergence.
