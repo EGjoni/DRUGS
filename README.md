@@ -5,7 +5,7 @@ This repo introduces Deep Random Micro-Glitch Sampling (DRµGS).
 ## The Problem:
 At a high level, the generative model landscape looks like first spending millions of dollars pretraining a giant model to predict the collective works of humanity, then giving those predictions to a dumb-as-rocks random number generator to kindly take into consideration in its role as the final arbiter over the multi-million dollar model's canonical output (which the model is then forced to commit to on its next prediction pass).
 
-This is insane.
+This is kinda nuts.
 
 ## The Solution:
 DRµGS just inverts this scheme. Instead of using noise to sample from the model's predictions, DRµGS injects noise directly into the transformer layers at inference time, thereby varying what the predicts. From here, simply selecting the most likely prediction is often enough to increase output variety while maintaining coherence.
@@ -31,7 +31,7 @@ While not an exhaustive list of the DRµGs that are theoretically possible, this
 
 First, install this library.
 
-`pip install +https://github.com/EGjoni/DRUGS.git`
+`pip install git+https://github.com/EGjoni/DRUGS.git`
 
 Then, import it into your project, and decide which and how much DRµGS you want your model to use.
 
@@ -145,5 +145,7 @@ And third, the most likely prediction changes, but generally remains reasonable.
 I feel like there's a lot more to play with and discover here, but, it's gonna need crowdsourcing. Personally my next step is to see (very seriously) explore the potential of DRµGS to control model hallucinations.
 
 
-Anyway -- critiques and contributions welcome. In the meantime, please enjoy using DRµGS!
+Anyway -- critiques and contributions welcome. And I'll have a mistral implementation up soon. 
+
+### In the meantime, please experiment with DRµGS!
 
