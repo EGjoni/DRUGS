@@ -5,7 +5,7 @@ This repo introduces Deep Random Micro-Glitch Sampling (DRµGS).
 ## The Problem:
 At a high level, the generative model landscape looks like first spending millions of dollars pretraining a giant model to predict the collective works of humanity, then giving those predictions to a dumb-as-rocks random number generator to kindly take into consideration in its role as the final arbiter over the multi-million dollar model's canonical output (which the model is then forced to commit to on its next prediction pass).
 
-This is insane.
+This is kinda nuts.
 
 ## The Solution:
 DRµGS just inverts this scheme. Instead of using noise to sample from the model's predictions, DRµGS injects noise directly into the transformer layers at inference time, thereby varying what the predicts. From here, simply selecting the most likely prediction is often enough to increase output variety while maintaining coherence.
@@ -31,7 +31,7 @@ While not an exhaustive list of the DRµGs that are theoretically possible, this
 
 First, install this library.
 
-`pip install +https://github.com/EGjoni/DRUGS.git`
+`pip install git+https://github.com/EGjoni/DRUGS.git`
 
 Then, import it into your project, and decide which and how much DRµGS you want your model to use.
 
@@ -57,13 +57,13 @@ You can then call model() as usual for a single forward pass, or use the DRUGS e
 ```python
 streamer = TextStreamer(tokenizer)
 with torch.no_grad():
-    generated_tokens = model.Dgenerate(
+    generated_tokens = model.Dgenerate( #capital 'D' before generate to distinguish from regular .generate()
         input_ids = tokenized_start,
         streamer = streamer
     )
 ```
 
-`model()
+
 
 Optionally, you can specify how deep you want you want to inject which type of DRµGs by defining a DRµG profile.
 
@@ -79,7 +79,7 @@ drug_profile = ([
 drugs.set_A_dose_shape(drug_profile) 
 ```
 
-For more examples, take a look at `just_chat.ipnyb`
+For more examples, take a look at `just_chat.ipynb`
 
 
 ### What is a reasonable dose of DRµGS?
@@ -103,8 +103,48 @@ And I'll leave you in the dust, like a poor excuse for a reason.
 
 Lord Kelvin:
 Hold up, Hamilton, you ain't ready,
-I'm the one who's got the science, the facts, and the```
+I'm the one who's got the science, the facts, and the
+```
 
-A fully sober model predicts the most likely next token is "energy". If we store the hidden states at each layer for the vector corresponding to that prediction, we can visualize the effects of injecting various amounts of noise at various layers. (you can access interactive graphs of each of the videos below at)
+A fully sober model predicts the most likely next token is "energy". If we store the hidden states at each layer for the vector corresponding to that prediction, we can visualize the effects of injecting various amounts of noise at various layers (keep an eye on the title at the top)
 
+
+https://github.com/EGjoni/DRUGS/assets/1353635/f43654d7-9ff8-4308-baef-5209e9d6e5f0
+
+
+https://github.com/EGjoni/DRUGS/assets/1353635/5b8e1fe9-c9a9-4b81-85fa-d0878f928298
+
+
+
+https://github.com/EGjoni/DRUGS/assets/1353635/f7a718dc-c9c4-41ae-a101-996c4c78c9ae
+
+
+
+https://github.com/EGjoni/DRUGS/assets/1353635/09f5c694-91da-48a0-ae9e-a29c9b46b478
+
+
+
+(Interactive versions of these graphs, as well as ones for Q and V dosages are available as .html files in the `experiments/vergence_plots/Hamilton_*` directory of this repo)
+
+To clarify these graphs:
+The prediction texts on the top right correspond solely to a (quite high) dosage theta of 0.7.
+Each video frame shows a different range of layers into which noise is being injected (as indicarted by the graph title at that frame)
+The horizontal axis shows the layer at which divergence is being measured.
+The vertical axis shows the degree of divergence at that layer.
+And the remaining axis shows the dose theta that was used to cause that degree of divergence.
+
+It might be a bit much to grok at  aglance, but once you've wrapped your head around it, a few things might immediately stand out. 
+
+First, we can add quite a lot of noise in earlier layers and the model very quickly drowns that noise out with its own signal. (This is likely part of why franken-merges work so well. It's not just that the residual stream keeps values in a reasonable region to avoid too much harm, it seem to be also that each layer of the model actively wants to push its inputs into something it can make sense of).
+
+Second, something special seems to happen in the middle layers that causes relatively large spikes in output divergence.
+
+And third, the most likely prediction changes, but generally remains reasonable.
+
+I feel like there's a lot more to play with and discover here, but, it's gonna need crowdsourcing. Personally my next step is to see (very seriously) explore the potential of DRµGS to control model hallucinations.
+
+
+Anyway -- critiques and contributions welcome. And I'll have a mistral implementation up soon. 
+
+### In the meantime, please experiment with DRµGS!
 
