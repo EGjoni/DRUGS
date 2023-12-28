@@ -15,19 +15,17 @@ sober_model = AutoModelForCausalLM.from_pretrained(
 sober_model.eval()
 streamer = TextStreamer(tokenizer)
 
-#torch.manual_seed(1703016825)#int(time.time()))  #TODO: inspect seed 1703016825
-print(f"USING SEED: {torch.initial_seed()}")
 injection_depth = 0.5 #how deep to shove the needle in
 spread = 1/32 #how many layers to dose on either side of the injection site
 
 drug_profile = ([
-    {'depth': (injection_depth-(spread+0.01)), 'peakratio': 0}, #ramp-up region
-    {'depth': (injection_depth-spread), 'peakratio': 1}, #sustained-peak
-    {'depth': (injection_depth+spread), 'peakratio' : 1}, #sustained-peak
-    {'depth': (injection_depth+(spread+0.01)), 'peakratio' : 0} #ramp-down region
-    ], 
+    {'depth': (injection_depth-(spread*1.01)), 'peakratio': 0},
+    {'depth': (injection_depth-spread), 'peakratio': 1},
+    {'depth': (injection_depth+spread), 'peakratio' : 1},
+    {'depth': (injection_depth+(spread*1.01)), 'peakratio' : 0}], 
 'ceil')
-drugs = DRUGS(v_shape=drug_profile)
+
+drugs = DRUGS()
 drugs.set_A_dose_theta(0.1)
 drugs.set_A_dose_shape(drug_profile)
 model = drugs.inject(sober_model)
