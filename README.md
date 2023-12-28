@@ -109,11 +109,20 @@ I'm the one who's got the science, the facts, and the
 A fully sober model predicts the most likely next token is "energy". If we store the hidden states at each layer for the vector corresponding to that prediction, we can visualize the effects of injecting various amounts of noise at various layers (keep an eye on the title at the top)
 
 
-https://github.com/EGjoni/DRUGS/assets/1353635/5970758d-d4ea-4013-b990-6e26d4a1612c
-https://github.com/EGjoni/DRUGS/assets/1353635/b723f910-b22d-47ce-b145-d5b99ceead96
+https://github.com/EGjoni/DRUGS/assets/1353635/f43654d7-9ff8-4308-baef-5209e9d6e5f0
 
-https://github.com/EGjoni/DRUGS/assets/1353635/c370b694-c458-4383-a276-e13e51e4196d
-https://github.com/EGjoni/DRUGS/assets/1353635/25fdcb16-0501-4da4-94be-66efd8e559d3
+
+https://github.com/EGjoni/DRUGS/assets/1353635/5b8e1fe9-c9a9-4b81-85fa-d0878f928298
+
+
+
+https://github.com/EGjoni/DRUGS/assets/1353635/f7a718dc-c9c4-41ae-a101-996c4c78c9ae
+
+
+
+https://github.com/EGjoni/DRUGS/assets/1353635/09f5c694-91da-48a0-ae9e-a29c9b46b478
+
+
 
 (Interactive versions of these graphs, as well as ones for Q and V dosages are available as .html files in the `experiments/vergence_plots/Hamilton_*` directory of this repo)
 
