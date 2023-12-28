@@ -1,0 +1,9 @@
+/__pycache__
+/__pycache__/*
+experiments/Hamilton*
+experiments/results
+experiments/vergence
+experiments/vergence_interval*
+experiments/vergence_plots/animated
+experiments/**/*.png
+*.pyc
