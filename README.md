@@ -79,7 +79,7 @@ drug_profile = ([
 drugs.set_A_dose_shape(drug_profile) 
 ```
 
-For more examples, take a look at `just_chat.ipnyb`
+For more examples, take a look at `just_chat.ipynb`
 
 
 ### What is a reasonable dose of DRµGS?
