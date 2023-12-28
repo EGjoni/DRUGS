@@ -8,7 +8,7 @@ At a high level, the generative model landscape looks like first spending millio
 This is kinda nuts.
 
 ## The Solution:
-DRµGS just inverts this scheme. Instead of using noise to sample from the model's predictions, DRµGS injects noise directly into the transformer layers at inference time, thereby varying what the predicts. From here, simply selecting the most likely prediction is often enough to increase output variety while maintaining coherence.
+DRµGS just inverts this scheme. Instead of using noise to sample from the model's predictions, DRµGS injects noise directly into the transformer layers at inference time, thereby varying what the model predicts. From here, simply selecting the most likely prediction is often enough to increase output variety while maintaining coherence.
 
 Intuitively, the primary advantage of this scheme (though there's more than one) is that the model has ample opportunity in its later layers to correct or account for our perturbations in its earlier layers.
 
