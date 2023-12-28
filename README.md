@@ -57,13 +57,13 @@ You can then call model() as usual for a single forward pass, or use the DRUGS e
 ```python
 streamer = TextStreamer(tokenizer)
 with torch.no_grad():
-    generated_tokens = model.Dgenerate(
+    generated_tokens = model.Dgenerate( #capital 'D' before generate to distinguish from regular .generate()
         input_ids = tokenized_start,
         streamer = streamer
     )
 ```
 
-`model()
+
 
 Optionally, you can specify how deep you want you want to inject which type of DRµGs by defining a DRµG profile.
 
@@ -103,8 +103,38 @@ And I'll leave you in the dust, like a poor excuse for a reason.
 
 Lord Kelvin:
 Hold up, Hamilton, you ain't ready,
-I'm the one who's got the science, the facts, and the```
+I'm the one who's got the science, the facts, and the
+```
 
-A fully sober model predicts the most likely next token is "energy". If we store the hidden states at each layer for the vector corresponding to that prediction, we can visualize the effects of injecting various amounts of noise at various layers. (you can access interactive graphs of each of the videos below at)
+A fully sober model predicts the most likely next token is "energy". If we store the hidden states at each layer for the vector corresponding to that prediction, we can visualize the effects of injecting various amounts of noise at various layers (keep an eye on the title at the top)
 
+
+https://github.com/EGjoni/DRUGS/assets/1353635/5970758d-d4ea-4013-b990-6e26d4a1612c
+https://github.com/EGjoni/DRUGS/assets/1353635/b723f910-b22d-47ce-b145-d5b99ceead96
+
+https://github.com/EGjoni/DRUGS/assets/1353635/c370b694-c458-4383-a276-e13e51e4196d
+https://github.com/EGjoni/DRUGS/assets/1353635/25fdcb16-0501-4da4-94be-66efd8e559d3
+
+(Interactive versions of these graphs, as well as ones for Q and V dosages are available as .html files in the `experiments/vergence_plots/Hamilton_*` directory of this repo)
+
+To clarify these graphs:
+The prediction texts on the top right correspond solely to a (quite high) dosage theta of 0.7.
+Each video frame shows a different range of layers into which noise is being injected. 
+The title clarifies which range of layers are being injected.
+The horizontal axis shows the layer at which divergence is being measured.
+The vertical axis shows the degree of divergence at that layer.
+And the remaining axis shows the dose theta that was used to cause that degree of divergence.
+
+It might be a bit much to grok at  aglance, but once you've wrapped your head around it, a few things might immediately stand out. 
+
+First, we can add quite a lot of noise in earlier layers and the model very quickly drowns that noise out with its own signal. (This is likely part of why franken-merges work so well. It's not just that the residual stream keeps values in a reasonable region to avoid too much harm, it seem to be also that each layer of the model actively wants to push its inputs into something it can make sense of).
+
+Second, something special seems to happen in the middle layers that causes relatively large spikes in output divergence.
+
+And third, the most likely prediction changes, but generally remains reasonable.
+
+I feel like there's a lot more to play with and discover here, but, it's gonna need crowdsourcing. Personally my next step is to see (very seriously) explore the potential of DRµGS to control model hallucinations.
+
+
+Anyway -- critiques and contributions welcome. In the meantime, please enjoy using DRµGS!
 
