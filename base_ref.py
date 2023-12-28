@@ -7,8 +7,6 @@ import torch
 from transformers import AutoTokenizer, TextStreamer, GenerationConfig
 from transformers import AutoModelForCausalLM
 
-
-
 model_id = "NousResearch/Llama-2-7b-chat-hf"
 tokenizer = AutoTokenizer.from_pretrained(model_id)
 tokenizer.pad_token_id = tokenizer.eos_token_id
