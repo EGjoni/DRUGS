@@ -31,7 +31,9 @@ While not an exhaustive list of the DRµGs that are theoretically possible, this
 
 First, install this library.
 
-`pip install git+https://github.com/EGjoni/DRUGS.git`
+```bash
+pip install git+https://github.com/EGjoni/DRUGS.git
+```
 
 Then, import it into your project, and decide which and how much DRµGS you want your model to use.
 
