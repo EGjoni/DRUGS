@@ -133,7 +133,7 @@ https://github.com/EGjoni/DRUGS/assets/1353635/09f5c694-91da-48a0-ae9e-a29c9b46b
 (Interactive versions of these graphs, as well as ones for Q and V dosages are available as .html files in the `experiments/vergence_plots/Hamilton_*` directory of this repo)
 
 To clarify these graphs:
-The prediction texts on the top right correspond solely to a (quite high) dosage theta of 0.7. The predictions listed are the top 10 most likely as per the sober model. THe `|||` bars indicate likelihood as per the DRµGS augmented model, turning into `+` to indcate how far they fall short of the baseline prediction, or `+` to indicate how much they exceed the baseline prediction.
+The prediction texts on the top right correspond solely to a (quite high) dosage theta of 0.7. The predictions listed are the top 10 most likely as per the sober model. THe `|||` bars indicate likelihood as per the DRµGS augmented model, turning into `-` to indcate how far they fall short of the baseline prediction, or `+` to indicate how much they exceed the baseline prediction.
 Each video frame shows a different range of layers into which noise is being injected (as indicarted by the graph title at that frame)
 The horizontal axis shows the layer at which divergence is being measured.
 The vertical axis shows the degree of divergence at that layer.
