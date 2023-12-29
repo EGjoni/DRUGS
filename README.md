@@ -8,7 +8,7 @@ At a high level, the generative model landscape looks like first spending millio
 This is kinda nuts.
 
 ## The Solution:
-DRµGS just inverts this scheme. Instead of using noise to sample from the model's predictions, DRµGS injects noise directly into the transformer layers at inference time, thereby varying what the predicts. From here, simply selecting the most likely prediction is often enough to increase output variety while maintaining coherence.
+DRµGS just inverts this scheme. Instead of using noise to sample from the model's predictions, DRµGS injects noise directly into the transformer layers at inference time, thereby varying what the model predicts. From here, simply selecting the most likely prediction is often enough to increase output variety while maintaining coherence.
 
 Intuitively, the primary advantage of this scheme (though there's more than one) is that the model has ample opportunity in its later layers to correct or account for our perturbations in its earlier layers.
 
@@ -31,7 +31,9 @@ While not an exhaustive list of the DRµGs that are theoretically possible, this
 
 First, install this library.
 
-`pip install git+https://github.com/EGjoni/DRUGS.git`
+```bash
+pip install git+https://github.com/EGjoni/DRUGS.git
+```
 
 Then, import it into your project, and decide which and how much DRµGS you want your model to use.
 
@@ -127,13 +129,13 @@ https://github.com/EGjoni/DRUGS/assets/1353635/09f5c694-91da-48a0-ae9e-a29c9b46b
 (Interactive versions of these graphs, as well as ones for Q and V dosages are available as .html files in the `experiments/vergence_plots/Hamilton_*` directory of this repo)
 
 To clarify these graphs:
-The prediction texts on the top right correspond solely to a (quite high) dosage theta of 0.7.
+The prediction texts on the top right correspond solely to a (quite high) dosage theta of 0.7. The predictions listed are the top 10 most likely as per the sober model. THe `|||` bars indicate likelihood as per the DRµGS augmented model, turning into `+` to indcate how far they fall short of the baseline prediction, or `+` to indicate how much they exceed the baseline prediction.
 Each video frame shows a different range of layers into which noise is being injected (as indicarted by the graph title at that frame)
 The horizontal axis shows the layer at which divergence is being measured.
 The vertical axis shows the degree of divergence at that layer.
 And the remaining axis shows the dose theta that was used to cause that degree of divergence.
 
-It might be a bit much to grok at  aglance, but once you've wrapped your head around it, a few things might immediately stand out. 
+It might be a bit much to grok at a glance, but once you've wrapped your head around it, a few things might immediately stand out. 
 
 First, we can add quite a lot of noise in earlier layers and the model very quickly drowns that noise out with its own signal. (This is likely part of why franken-merges work so well. It's not just that the residual stream keeps values in a reasonable region to avoid too much harm, it seem to be also that each layer of the model actively wants to push its inputs into something it can make sense of).
 
