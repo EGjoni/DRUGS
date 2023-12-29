@@ -12,7 +12,7 @@ setup(
     package_dir={"": "."},
     packages=find_packages(),
     install_requires=[
-        "transformers", 
+        "transformers>=4.36.2", 
         "torch",
         "numpy",
         "msgpack"
