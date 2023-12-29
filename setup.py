@@ -15,7 +15,6 @@ setup(
         "transformers", 
         "torch",
         "numpy",
-        "json",
         "msgpack"
     ],
     classifiers=[
