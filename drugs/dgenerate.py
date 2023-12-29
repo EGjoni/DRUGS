@@ -8,6 +8,7 @@ from drugs.generation.utils import _update_model_kwargs_for_generation
 from transformers import AutoTokenizer, TextStreamer, GenerationConfig
 current_script_dir = os.path.dirname(os.path.abspath(__file__))
 logger = logging.get_logger(__name__)
+fNone = object()
 
 class DRUGS:
     dose_theta = {'A': 0, 'Q': 0,  'K': 0, 'V': 0}
@@ -45,8 +46,7 @@ class DRUGS:
            
     def generate(self,
             input_ids: torch.LongTensor = None,
-            past_key_values: Optional[List[torch.FloatTensor]] = None,
-            use_cache: Optional[bool] = True,
+            past_key_values: Optional[List[torch.FloatTensor]] = fNone, #explicitly provide "None" to start a new generation from scratch
             streamer: Optional[TextStreamer] = None,
             tokenizer: Optional[AutoTokenizer] = None, # provide seperately from streamer to print to console synchronously
             generation_min: Optional[int] = 1,
@@ -59,10 +59,13 @@ class DRUGS:
         r""" 
             the last sampler parameter allows you to pass in some sampling callback, provides logits
         """
-        self.past_key_values = past_key_values
+        if past_key_values is not fNone:
+            self.past_key_values = past_key_values
+            self.cached_tokens = None
         with torch.no_grad():
             if self.cached_tokens is None:
                 self.cached_tokens = torch.empty((*input_ids.shape[:-1], 0), dtype=input_ids.dtype)
+                self.dirty_count = -6
             
             chunks = torch.split(input_ids, 32, dim=1)
             gend_tokens = torch.empty((*input_ids.shape[:-1], 0), dtype=input_ids.dtype)
@@ -76,7 +79,7 @@ class DRUGS:
             self.maybe_print(streamer, tokenizer, input_ids)
             
             old_dose_multiplier = self.get_dose_multiplier()
-            self.set_dose_multiplier(0)
+            self.set_dose_multiplier(0) #don't noise anything until we start generating from it
             for i, chunk in enumerate(chunks):
                 self.cached_tokens = torch.cat((self.cached_tokens, chunk), dim = -1)
                 outputs = self.model(input_ids=chunk, past_key_values=self.past_key_values, use_cache=True)
@@ -105,7 +108,7 @@ class DRUGS:
                     next_token = sampler(outputs.logits, None).unsqueeze(0)
                     self.past_key_values = outputs.past_key_values
                     gend_tokens = torch.cat((gend_tokens, next_token), dim = -1)
-                    self.top_log_cache.append(torch.max(outputs.logits.squeeze(0)[0,:]).item())
+                    #self.top_log_cache.append(torch.max(outputs.logits.squeeze(0)[0,:]).item())
                     self.maybe_print(streamer, tokenizer, next_token)                    
                     self.cached_tokens = torch.cat((self.cached_tokens, next_token), dim = -1)
                     self.dirty_count += 1
@@ -271,6 +274,7 @@ class DRUGS:
         return self.r_seed
     
     def save_trace(self, experiment, subtype, injection_depth, logits, top_k, hidden_states, tokenizer):
+        r"""saves hidden states and dosage parameters to a msgpack file for experimenting"""
         import torch.nn.functional as F
         import torch
         import numpy as np
@@ -313,7 +317,9 @@ class DRUGS:
             
         
     def cold_shower(self, force_clean = False):
-        
+        r"""
+        brings the cached kv vectors back to a sober baseline
+        """
         with torch.no_grad():
             if self.past_key_values is None or self.dirty_count <= 0:
                 return self.past_key_values
