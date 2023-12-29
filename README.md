@@ -133,7 +133,7 @@ The horizontal axis shows the layer at which divergence is being measured.
 The vertical axis shows the degree of divergence at that layer.
 And the remaining axis shows the dose theta that was used to cause that degree of divergence.
 
-It might be a bit much to grok at  aglance, but once you've wrapped your head around it, a few things might immediately stand out. 
+It might be a bit much to grok at a glance, but once you've wrapped your head around it, a few things might immediately stand out. 
 
 First, we can add quite a lot of noise in earlier layers and the model very quickly drowns that noise out with its own signal. (This is likely part of why franken-merges work so well. It's not just that the residual stream keeps values in a reasonable region to avoid too much harm, it seem to be also that each layer of the model actively wants to push its inputs into something it can make sense of).
 
