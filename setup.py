@@ -10,7 +10,7 @@ setup(
     long_description_content_type="text/markdown", 
     url="https://github.com/EGjoni/DRUGS",
     package_dir={"": "drugs"},
-    packages=find_packages(where="drugs"),
+    packages=find_packages(),
     install_requires=[
         "transformers", 
         "torch",
