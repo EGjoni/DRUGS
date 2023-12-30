@@ -7,3 +7,5 @@ experiments/vergence_interval*
 experiments/vergence_plots/animated
 experiments/**/*.png
 *.pyc
+/build
+/DRUGS.egg-info
