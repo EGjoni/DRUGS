@@ -13,7 +13,11 @@ DRµGS just inverts this scheme. Instead of using noise to sample from the model
 Intuitively, the primary advantage of this scheme (though there's more than one) is that the model has ample opportunity in its later layers to correct or account for our perturbations in its earlier layers.
 
 ### Should I use DRµGS?
-Absolutely. But do note that this proof of concept repo only supports LLaMA models. This isn't a technical limitation, and I'm very open to contributions from anyone willing to help me make DRµGS. 
+Absolutely. But do note that this proof of concept repo only supports LLaMA models. This isn't a technical limitation, and I'm very open to contributions from anyone willing to help me make DRµGS.
+
+You can get a sense of its generation quality in this colab chat with Alan Watts.
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1-1TpLb4fcdUU-zahaKY_TOr7jI-88DdQ?usp=sharing)
 
 ### Are there any negative side effects from using DRµGS?
 Negative side effects are difficult to identify subjectively, and in my experience DRµGs feel great the whole time you're using them.
@@ -129,7 +133,7 @@ https://github.com/EGjoni/DRUGS/assets/1353635/09f5c694-91da-48a0-ae9e-a29c9b46b
 (Interactive versions of these graphs, as well as ones for Q and V dosages are available as .html files in the `experiments/vergence_plots/Hamilton_*` directory of this repo)
 
 To clarify these graphs:
-The prediction texts on the top right correspond solely to a (quite high) dosage theta of 0.7. The predictions listed are the top 10 most likely as per the sober model. THe `|||` bars indicate likelihood as per the DRµGS augmented model, turning into `+` to indcate how far they fall short of the baseline prediction, or `+` to indicate how much they exceed the baseline prediction.
+The prediction texts on the top right correspond solely to a (quite high) dosage theta of 0.7. The predictions listed are the top 10 most likely as per the sober model. THe `|||` bars indicate likelihood as per the DRµGS augmented model, turning into `-` to indcate how far they fall short of the baseline prediction, or `+` to indicate how much they exceed the baseline prediction.
 Each video frame shows a different range of layers into which noise is being injected (as indicarted by the graph title at that frame)
 The horizontal axis shows the layer at which divergence is being measured.
 The vertical axis shows the degree of divergence at that layer.
