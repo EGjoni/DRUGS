@@ -81,11 +81,11 @@ class DRUGS:
             if sampler is None:
                 sampler = self.argmax_select_next_token
             if self.cached_tokens is None:
-                self.cached_tokens = torch.empty((*input_ids.shape[:-1], 0), dtype=input_ids.dtype)
+                self.cached_tokens = torch.empty((*input_ids.shape[:-1], 0), dtype=input_ids.dtype, device=input_ids.device)
                 self.dirty_count = -6
             
             self.cached_tokens = torch.cat((self.cached_tokens, input_ids), dim=-1)
-            gend_tokens = torch.empty((*input_ids.shape[:-1], 0), dtype=input_ids.dtype)
+            gend_tokens = torch.empty((*input_ids.shape[:-1], 0), dtype=input_ids.dtype, device=input_ids.device)
             
             if streamer is not None:
                 self.streamer = streamer
