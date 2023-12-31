@@ -10,8 +10,6 @@ from drugs.inject_mixin import InjectDrugsMixin
 import torch
 from typing import Optional, Tuple, List, Union
 
-#TODO: self.model._modules['layers']._modules exposes decoder layers, maybe better way to access layer idx?
-
 class LlamaPreTrainedModel(InjectDrugsMixin, TLlamaPreTrainedModel):
     pass
 

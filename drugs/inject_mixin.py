@@ -17,7 +17,7 @@ MODEL_NAME_MAPPING = {
     #"mpt": "MptModel",
     #"gpt_neox": "GPTNeoXModel",
     #"gptj": "GPTJModel",
-    #"mistral": "MistralModel",
+    "mistral": "MistralModel",
     #"qwen": "QWenModel",
     #"stablelm_epoch": "StableLMEpochModel"
 }
@@ -29,7 +29,7 @@ ATTENTION_NAME_MAPPING = {
     #"mpt": "MptAttention",
     #"gpt_neox": "GPTNeoXAttention",
     #"gptj": "GPTJAttention",
-    #"mistral": "MistralAttention",
+    "mistral": "MistralAttention",
     #"qwen": "QWenAttention",
     #"stablelm_epoch": "Attention",
 }
@@ -56,7 +56,7 @@ class InjectDrugsMixin:
             #mpt_drugged_attention_forward,
             #gptj_drugged_attention_forward,
             llama_drugged_attention_forward,
-            #mistral_drugged_attention_forward,
+            mistral_drugged_attention_forward,
             #qwen_drugged_attention_forward,
             #stablelm_epoch_drugged_attention_forward,
         )
@@ -67,14 +67,14 @@ class InjectDrugsMixin:
             #"mpt": None,
             #"gpt_neox": gpt_neox_drugged_attention_forward,
             #"gptj": gptj_drugged_attention_forward,
-            #"mistral": mistral_drugged_attention_forward,
+            "mistral": mistral_drugged_attention_forward,
             #"qwen": qwen_drugged_attention_forward,
             #"stablelm_epoch": stablelm_epoch_drugged_attention_forward,
         }
         
 
         # Not all models require updated attention forwards
-        if ATTENTION_FORWARD_MAPPING[model_type] is None:
+        if model_type not in ATTENTION_FORWARD_MAPPING or ATTENTION_FORWARD_MAPPING[model_type] is None:
             return
 
         #TODO: support flash attention 2 and sdpa 

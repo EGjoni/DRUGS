@@ -2,9 +2,14 @@ import torch
 import json, os, msgpack
 from transformers.utils import logging
 import types
+import inspect
+import copy
 from typing import Optional, List, Callable
 from drugs.inject_mixin import InjectDrugsMixin, ATTENTION_NAME_MAPPING, MODEL_NAME_MAPPING, KV_DIM_MAPPING
-from drugs.generation.utils import _update_model_kwargs_for_generation
+from transformers import GenerationMixin
+from transformers.cache_utils import DynamicCache
+from transformers.generation.utils import LogitsProcessorList, StoppingCriteriaList
+
 from transformers import AutoTokenizer, TextStreamer, GenerationConfig
 current_script_dir = os.path.dirname(os.path.abspath(__file__))
 logger = logging.get_logger(__name__)
@@ -18,7 +23,7 @@ class DRUGS:
     do_record = False
     dose_shapes = {'A': None, 'Q': None,  'K': None, 'V': None}
     dose_mode =  {'A': 'interpolate', 'Q': 'interpolate',  'K': 'interpolate', 'V': 'interpolate'}
-    past_key_values = None
+    past_key_values = DynamicCache()
     sober_interval = 420
     model = None
     dirty_count = -6
@@ -49,25 +54,37 @@ class DRUGS:
             past_key_values: Optional[List[torch.FloatTensor]] = fNone, #explicitly provide "None" to start a new generation from scratch
             streamer: Optional[TextStreamer] = None,
             tokenizer: Optional[AutoTokenizer] = None, # provide seperately from streamer to print to console synchronously
-            generation_min: Optional[int] = 1,
-            generation_max: Optional[int] = 100000,
-            sampler : Optional[Callable[[torch.tensor, #logits for you
+            min_new_tokens: Optional[int] = None,
+            max_new_tokens: Optional[int] = 32000,
+            logits_processor: Optional[LogitsProcessorList] = None,
+            stopping_criteria: Optional[StoppingCriteriaList] = None,
+            negative_prompt_ids: Optional[torch.Tensor] = None, #I really hope no one uses these because I have no clue if it works.
+            negative_prompt_attention_mask: Optional[torch.Tensor] = None,
+            sampler : Optional[Callable[[torch.tensor, #logits and scores for you
                                          torch.tensor, #hidden states for you
                                          ], torch.tensor #selected token id for me
                                 ]] = None
         ):
         r""" 
-            the last sampler parameter allows you to pass in some sampling callback, provides logits
+            the last sampler parameter allows you to pass in some sampling callback, 
+            provides logits and logitprocessor scores, expects you to provide the selected token.
+            the default is just argmax. 
+            Note that for flexibility, logits are provided as predictions for every input token,
+            but scores are provided only for the predicted next token. You can convert logits to the
+            same shape with logits[:,-1,:]
+            the sampler callback is expected to return a tensor of shape [1]
         """
         if past_key_values is not fNone:
             self.past_key_values = past_key_values
             self.cached_tokens = None
         with torch.no_grad():
+            if sampler is None:
+                sampler = self.argmax_select_next_token
             if self.cached_tokens is None:
                 self.cached_tokens = torch.empty((*input_ids.shape[:-1], 0), dtype=input_ids.dtype)
                 self.dirty_count = -6
             
-            chunks = torch.split(input_ids, 32, dim=1)
+            self.cached_tokens = torch.cat((self.cached_tokens, input_ids), dim=-1)
             gend_tokens = torch.empty((*input_ids.shape[:-1], 0), dtype=input_ids.dtype)
             
             if streamer is not None:
@@ -80,52 +97,72 @@ class DRUGS:
             
             old_dose_multiplier = self.get_dose_multiplier()
             self.set_dose_multiplier(0) #don't noise anything until we start generating from it
-            for i, chunk in enumerate(chunks):
-                self.cached_tokens = torch.cat((self.cached_tokens, chunk), dim = -1)
-                outputs = self.model(input_ids=chunk, past_key_values=self.past_key_values, use_cache=True)
-                self.past_key_values, logits = outputs.past_key_values, outputs.logits
-                
-                #del outputs
-                #torch.cuda.empty_cache()
+            t_input_ids, model_kwargs, logits_processor, stopping_criteria, gen_conf = self.go_through_hell(
+                    self.cached_tokens,
+                    logits_processor=logits_processor, 
+                    min_new_tokens = min_new_tokens, 
+                    max_new_tokens = max_new_tokens,
+                    stopping_criteria=stopping_criteria,
+                    negative_prompt_ids = negative_prompt_ids,
+                    negative_prompt_attention_mask= negative_prompt_attention_mask
+                )
+            unfinished_sequences = torch.ones(t_input_ids.shape[0], dtype=torch.long, device=t_input_ids.device)
+            
+            model_inputs = self.model.prepare_inputs_for_generation(input_ids=t_input_ids, past_key_values = self.past_key_values, **model_kwargs)
+            outputs = self.model(**model_inputs)
+            model_kwargs = self.model._update_model_kwargs_for_generation(outputs, model_kwargs, is_encoder_decoder= False)
+            self.past_key_values = model_kwargs['past_key_values']
+            logits = outputs.logits
+            next_token_scores = logits_processor(t_input_ids, logits[:,-1,:])
+            hidden_states = None if 'hidden_states' not in outputs else outputs['hidden_states']
+            next_token = self.maybe_pad(sampler(logits, next_token_scores, hidden_states), gen_conf, unfinished_sequences)
+            unfinished_sequences = self.update_completions(unfinished_sequences, next_token)
+            
 
             self.set_dose_multiplier(old_dose_multiplier)
-            if sampler is None:
-                sampler = self.argmax_select_next_token
-                
-            next_token = sampler(logits, None).unsqueeze(0)
             
             self.maybe_print(streamer, tokenizer, next_token)
             
             gend_tokens = torch.cat((gend_tokens, next_token), dim = -1)
+            self.cached_tokens = torch.cat((self.cached_tokens, next_token), dim=-1)
             
-            
-            while gend_tokens.shape[1] < generation_max:
-                
+            while gend_tokens.shape[-1] < max_new_tokens:
                 self.past_key_values = self.cold_shower()
-                
-                if self.is_not_stop_condition(next_token, gend_tokens.shape[1], generation_min, generation_max, streamer):
-                    outputs = self.model(input_ids=next_token, past_key_values= self.past_key_values, use_cache=True)
-                    next_token = sampler(outputs.logits, None).unsqueeze(0)
-                    self.past_key_values = outputs.past_key_values
-                    gend_tokens = torch.cat((gend_tokens, next_token), dim = -1)
-                    #self.top_log_cache.append(torch.max(outputs.logits.squeeze(0)[0,:]).item())
-                    self.maybe_print(streamer, tokenizer, next_token)                    
-                    self.cached_tokens = torch.cat((self.cached_tokens, next_token), dim = -1)
-                    self.dirty_count += 1
-                else: 
+                model_inputs = self.model.prepare_inputs_for_generation(input_ids=self.cached_tokens, **model_kwargs)
+                outputs = self.model(**model_inputs)
+                logits = outputs.logits
+                next_token_scores = logits_processor(self.cached_tokens, outputs.logits[:,-1,:])
+                next_token = self.maybe_pad(sampler(outputs.logits, next_token_scores, None), gen_conf, unfinished_sequences)
+                unfinished_sequences = self.update_completions(unfinished_sequences, next_token)
+                gend_tokens = torch.cat((gend_tokens, next_token), dim = -1)
+                self.maybe_print(streamer, tokenizer, next_token)                    
+                self.cached_tokens = torch.cat((self.cached_tokens, next_token), dim = -1)
+                self.dirty_count += 1
+                model_kwargs = self.model._update_model_kwargs_for_generation(outputs, model_kwargs, is_encoder_decoder= False)
+                self.past_key_values = model_kwargs['past_key_values']
+                if stopping_criteria(self.cached_tokens, gend_tokens) or unfinished_sequences.max() == 0:
                     break
-
-            self.past_key_values = self.cold_shower()
+                
+            #self.past_key_values = self.cold_shower()
             
             if streamer is not None:
-                streamer.put(streamer.tokenizer.encode(' ', return_tensors="pt"))        
+                streamer.end()#(streamer.tokenizer.encode(' ', return_tensors="pt"))        
         return gend_tokens
     
-    def argmax_select_next_token(self, logits, hidden_states):
-        next_token_logits = logits[:, -1, :]
-        top_k_indices = torch.topk(next_token_logits, k=1, dim=-1).indices[0]
-        return top_k_indices[0].unsqueeze(0)
+    def argmax_select_next_token(self, logits, next_token_scores, hidden_states):
+        #next_token_logits = logits[:, -1, :]
+        #top_k_indices = torch.topk(next_token_logits, k=1, dim=-1).indices[0]
+        return torch.argmax(next_token_scores, dim=-1, keepdim= True)
                   
+    def reset_model_state(self):
+        r"""
+        clears the Dgenerator key+value and token cache.
+        basically just a convenience function for jupyter notebook cells
+        to keep the dosage info active but otherwise start the model fresh"""
+        self.past_key_values = DynamicCache()
+        self.cached_tokens = None
+        self.dirty_count = -6
+        
     def record_value(self, token_num, value):
         if token_num not in self.state_log:
             self.state_log[token_num] = []
@@ -256,7 +293,7 @@ class DRUGS:
             layer.layer_idx = idx
             layer.dgenerator = self.model.dgenerator
             layer.self_attn.adderall_theta = self.get_A_dose_theta(idx, layerct)
-            layer.self_attn.quelude_theta = self.get_Q_dose_theta(idx, layerct)
+            layer.self_attn.quaalude_theta = self.get_Q_dose_theta(idx, layerct)
             layer.self_attn.ketamine_theta = self.get_K_dose_theta(idx, layerct)
             layer.self_attn.valium_theta = self.get_V_dose_theta(idx, layerct)
     
@@ -331,7 +368,10 @@ class DRUGS:
                 old_dose_multiplier = self.get_dose_multiplier()
                 self.set_dose_multiplier(0)
                 outputs = self.model(input_ids=regen_tokens, past_key_values=new_past_key_values, use_cache=True)
-                
+                self.past_key_values = DynamicCache()
+                for i, (k, v) in enumerate(outputs.past_key_values):
+                    self.past_key_values.update(k, v, i)
+                    
                 #TODO: Figure out why this doesn't work the first time when no noise is injected.
                 """
                 if torch.max(self.past_key_values[20][0] - outputs.past_key_values[20][0]) > 0:
@@ -339,8 +379,7 @@ class DRUGS:
                     self.cold_shower()
                 """
                     
-                self.set_dose_multiplier(old_dose_multiplier)    
-                self.past_key_values = outputs.past_key_values
+                self.set_dose_multiplier(old_dose_multiplier)
                 self.dirty_count -= max_clean
                 del new_past_key_values
                 torch.cuda.empty_cache()
@@ -364,6 +403,23 @@ class DRUGS:
                 return self.tokenizer.decode(input_ids)
             finally:
                 return self.tokenizer.decode(input_ids.squeeze(0))
+    
+    def update_completions(self, unfinished_sequences, next_tokens):
+        if self.eos_token_id_tensor is not None:
+            unfinished_sequences = unfinished_sequences.mul(
+                next_tokens.tile(self.eos_token_id_tensor.shape[0], 1).ne(self.eos_token_id_tensor.unsqueeze(1)).prod(dim=0)
+            )
+        return unfinished_sequences
+            
+    #adds padding token to end of sequence if necessary
+    def maybe_pad(self, next_tokens, generation_config, unfinished_sequences):
+        eos_token_id = generation_config.eos_token_id
+        pad_token_id = generation_config.pad_token_id
+        if eos_token_id is not None:
+                if pad_token_id is None:
+                    raise ValueError("If `eos_token_id` is defined, make sure that `pad_token_id` is defined.")
+                next_tokens = next_tokens * unfinished_sequences + pad_token_id * (1 - unfinished_sequences)
+        return next_tokens
     
     def maybe_print(self, streamer, tokenizer, input_ids, loop=False):
         result = ''
@@ -426,9 +482,69 @@ class DRUGS:
             )
         
         InjectDrugsMixin._inject_drugged_attention(model)
-        model._update_model_kwargs_for_generation = types.MethodType(_update_model_kwargs_for_generation, model)
+        #model._update_model_kwargs_for_generation = types.MethodType(_update_model_kwargs_for_generation, model)
         
         return self.model
+    
+    def go_through_hell(self, inputs, generation_config = None,
+                        min_new_tokens = None, max_new_tokens = None,
+                        logits_processor = None, stopping_criteria = None, 
+                        negative_prompt_ids = None, negative_prompt_attention_mask = None,
+                        **kwargs):
+        r"""creates all of the absurd shit that may or may not be needed on a per model basis, 
+        prays for salvation the whole time because the transformers library thought it would be a 
+        great idea to not make this part of its generation mixin modular."""
+        self.model.generation_config.pad_token_id = self.tokenizer.pad_token_id if self.model.generation_config.pad_token_id is None else self.model.generation_config.pad_token_id
+        generation_config = generation_config if generation_config is not None else self.model.generation_config
+        generation_config = copy.deepcopy(generation_config)
+        generation_config.min_new_tokens = min_new_tokens if min_new_tokens is not None else generation_config.min_new_tokens
+        generation_config.max_new_tokens = max_new_tokens if max_new_tokens is not None else generation_config.max_new_tokens
+        
+        model_kwargs = generation_config.update(**kwargs)
+        inputs_tensor, model_input_name, model_kwargs = self.model._prepare_model_inputs(
+            inputs, generation_config.bos_token_id, model_kwargs
+        )
+        model_kwargs["use_cache"] = generation_config.use_cache
+        accepts_attention_mask = "attention_mask" in set(inspect.signature(self.model.forward).parameters.keys())
+        requires_attention_mask = "encoder_outputs" not in model_kwargs
+
+        if model_kwargs.get("attention_mask", None) is None and requires_attention_mask and accepts_attention_mask:
+            model_kwargs["attention_mask"] = self.model._prepare_attention_mask_for_generation(
+                inputs_tensor, self.tokenizer.pad_token_id, self.tokenizer.eos_token_id
+            )
+
+        if (generation_config.pad_token_id is not None
+            and len(inputs_tensor.shape) == 2
+            and torch.sum(inputs_tensor[:, -1] == generation_config.pad_token_id) > 0
+            ):
+            print("bad")
+        
+        # 5. Prepare `input_ids` which will be used for auto-regressive generation
+        input_ids = inputs_tensor if model_input_name == "input_ids" else model_kwargs.pop("input_ids")
+        input_ids_length = input_ids.shape[-1]
+        generation_config.max_length = generation_config.max_new_tokens + input_ids_length
+        
+        logits_processor = logits_processor if logits_processor is not None else LogitsProcessorList()
+        logits_processor = self.model._get_logits_processor(
+            generation_config=generation_config,
+            input_ids_seq_length=input_ids_length,
+            encoder_input_ids=inputs_tensor,
+            logits_processor=logits_processor,
+            model_kwargs=model_kwargs,
+            prefix_allowed_tokens_fn = None,
+            negative_prompt_ids=negative_prompt_ids,
+            negative_prompt_attention_mask=negative_prompt_attention_mask,
+        )
+        stopping_criteria = stopping_criteria if stopping_criteria is not None else StoppingCriteriaList()
+        stopping_criteria = self.model._get_stopping_criteria(
+            generation_config=generation_config, stopping_criteria=stopping_criteria
+        )
+        eos_token_id = generation_config.eos_token_id
+        if isinstance(eos_token_id, int):
+            eos_token_id = [eos_token_id]
+        self.eos_token_id_tensor = torch.tensor(eos_token_id).to(input_ids.device) if eos_token_id is not None else None
+        
+        return input_ids, model_kwargs, logits_processor, stopping_criteria, generation_config
     
     
 import numpy as np

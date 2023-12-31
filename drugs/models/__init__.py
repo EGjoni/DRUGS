@@ -37,13 +37,13 @@ from .llama import (
     LlamaModel,
     llama_drugged_attention_forward
 )
-"""from .mistral import (
+from .mistral import (
     MistralForCausalLM,
     MistralForSequenceClassification,
     MistralModel,
     mistral_drugged_attention_forward,
 )
-from .mpt import (
+"""from .mpt import (
     MptAttention,
     MptForCausalLM,
     MptForQuestionAnswering,

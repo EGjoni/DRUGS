@@ -10,7 +10,10 @@ from .models import (
     AutoModelForTokenClassification,
     LlamaForCausalLM,
     LlamaForSequenceClassification,
-    LlamaModel
+    LlamaModel,
+    MistralForCausalLM,
+    MistralForSequenceClassification,
+    MistralModel,
 )
 
 """
@@ -31,9 +34,6 @@ from .models import (
     GPTNeoXForTokenClassification,
     GPTNeoXModel,
     GPTNeoXPreTrainedModel,
-    MistralForCausalLM,
-    MistralForSequenceClassification,
-    MistralModel,
     MptForCausalLM,
     MptForQuestionAnswering,
     MptForSequenceClassification,

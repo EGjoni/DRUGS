@@ -1,5 +1,4 @@
 #This file is just a sober baseline
-
 import time
 import bitsandbytes
 import sys
@@ -7,9 +6,8 @@ import torch
 from transformers import AutoTokenizer, TextStreamer, GenerationConfig
 from transformers import AutoModelForCausalLM
 
-model_id = "NousResearch/Llama-2-7b-chat-hf"
+model_id = "cognitivecomputations/dolphin-2.2.1-mistral-7b"
 tokenizer = AutoTokenizer.from_pretrained(model_id)
-tokenizer.pad_token_id = tokenizer.eos_token_id
 model = AutoModelForCausalLM.from_pretrained(
     model_id,
     device_map="auto",
@@ -39,14 +37,13 @@ with torch.no_grad():
             input_ids=tokenized_start.to('cuda'),
             generation_config=GenerationConfig(
                 use_cache=True,
-                min_new_tokens=20,
+                min_new_tokens=2,
                 max_new_tokens=500,
                 temperature=1,
                 do_sample=False,
-                pad_token_id=tokenizer.pad_token_id,
                 eos_token_id=tokenizer.eos_token_id,
                 return_dict_in_generate=True,
-                output_hidden_states=True,
+                output_hidden_states=False,
                 output_scores = True
             ),
             streamer=streamer,    
