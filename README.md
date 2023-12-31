@@ -13,7 +13,7 @@ DRµGS just inverts this scheme. Instead of using noise to sample from the model
 Intuitively, the primary advantage of this scheme (though there's more than one) is that the model has ample opportunity in its later layers to correct or account for our perturbations in its earlier layers.
 
 ### Should I use DRµGS?
-Absolutely. But do note that this proof of concept repo only supports LLaMA models. This isn't a technical limitation, and I'm very open to contributions from anyone willing to help me make DRµGS.
+Absolutely. But do note that this proof of concept repo only supports LLaMA and mistral models. This isn't a technical limitation, and I'm very open to contributions from anyone willing to help me make DRµGS.
 
 You can get a sense of its generation quality in this colab chat with Alan Watts.
 
@@ -46,9 +46,8 @@ import torch
 from transformers import AutomodelForCausalLM, Autotokenizer, TextStreamer
 from drugs.dgenerate import DRUGS
 
-model_id = "NousResearch/Llama-2-7b-chat-hf" #or whatever LLaMA2 variant you prefer
+model_id = "NousResearch/Llama-2-7b-chat-hf" #or whatever LLaMA2 or mistral variant you prefer
 tokenizer = AutoTokenizer.from_pretrained(model_id)
-tokenizer.pad_token_id = tokenizer.eos_token_id
 sober_model = AutoModelForCausalLM.from_pretrained(model_id, device_map="auto")
 sober_model.eval()
 
@@ -90,9 +89,9 @@ For more examples, take a look at `just_chat.ipynb`
 
 ### What is a reasonable dose of DRµGS?
 
-The `dose_theta`` parameter basically just defines a maximum angle in radians by which to randomly rotate the A, Q, K, or V vectors. You probably shouldn't go past 0.1, but this kind of depends on which drug and where you're injecting it.
+The `dose_theta`` parameter basically just defines a maximum angle in radians by which to randomly rotate the A, Q, K, or V vectors. You probably shouldn't go past 0.1, but this kind of depends on the DRµG type and injection sites.
 
-But this is also kind of where things get interesting. Consider the following starting prompt:
+This is also kind of where things get interesting. Consider the following starting prompt:
 
 ```
 <s> [INST]
@@ -133,7 +132,7 @@ https://github.com/EGjoni/DRUGS/assets/1353635/09f5c694-91da-48a0-ae9e-a29c9b46b
 (Interactive versions of these graphs, as well as ones for Q and V dosages are available as .html files in the `experiments/vergence_plots/Hamilton_*` directory of this repo)
 
 To clarify these graphs:
-The prediction texts on the top right correspond solely to a (quite high) dosage theta of 0.7. The predictions listed are the top 10 most likely as per the sober model. THe `|||` bars indicate likelihood as per the DRµGS augmented model, turning into `-` to indcate how far they fall short of the baseline prediction, or `+` to indicate how much they exceed the baseline prediction.
+The prediction texts on the top right correspond solely to a (quite high) dosage theta of 0.7. The predictions listed are the top 10 most likely as per the sober model. The `|||` bars indicate likelihood as per the DRµGS augmented model, turning into `-` to indcate how far they fall short of the baseline prediction, or `+` to indicate how much they exceed the baseline prediction.
 Each video frame shows a different range of layers into which noise is being injected (as indicarted by the graph title at that frame)
 The horizontal axis shows the layer at which divergence is being measured.
 The vertical axis shows the degree of divergence at that layer.
@@ -147,10 +146,10 @@ Second, something special seems to happen in the middle layers that causes relat
 
 And third, the most likely prediction changes, but generally remains reasonable.
 
-I feel like there's a lot more to play with and discover here, but, it's gonna need crowdsourcing. Personally my next step is to see (very seriously) explore the potential of DRµGS to control model hallucinations.
+I feel like there's a lot more to play with and discover here, but, it's gonna need crowdsourcing. Personally my next step is to (very seriously) explore the potential of DRµGS to control model hallucinations.
 
 
-Anyway -- critiques and contributions welcome. And I'll have a mistral implementation up soon. 
+Anyway -- critiques and contributions welcome. And I'll have a mistral implementation up ~soon~ right now. It's up. 
 
 ### In the meantime, please experiment with DRµGS!
 
