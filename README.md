@@ -29,7 +29,7 @@ This library includes a `cold_shower` function, which periodically sobers up the
 
 
 ### What kind of DRµGs can I use?
-While not an exhaustive list of the DRµGs that are theoretically possible, this repo provides implementations and experimental data for four types of DRµGs. These are Q, K, V, and A; which inject noise into the Query, Key, Value, and Attention head outputs, respectively.
+While not an exhaustive list of the DRµGs that are theoretically possible, this repo provides implementations and experimental data for five types of DRµGs. These are H, Q, K, V, and A; which inject noise into the Hidden state inputs, Query, Key, Value, and Attention head outputs, respectively.
 
 ### How do I use DRµGs?
 
@@ -43,12 +43,13 @@ Then, import it into your project, and decide which and how much DRµGS you want
 
 ```python
 import torch
-from transformers import AutomodelForCausalLM, Autotokenizer, TextStreamer
+from nice_imports import efficiency_stuff #platform convenience
+from transformers import AutoTokenizer, TextStreamer, AutoModelForCausalLM
 from drugs.dgenerate import DRUGS
 
 model_id = "NousResearch/Llama-2-7b-chat-hf" #or whatever LLaMA2 or mistral variant you prefer
+sober_model = AutoModelForCausalLM.from_pretrained(model_id, **efficiency_stuff)
 tokenizer = AutoTokenizer.from_pretrained(model_id)
-sober_model = AutoModelForCausalLM.from_pretrained(model_id, device_map="auto")
 sober_model.eval()
 
 #prepare DRUGS, then inject into the model.
@@ -69,19 +70,18 @@ with torch.no_grad():
 ```
 
 
-
 Optionally, you can specify how deep you want you want to inject which type of DRµGs by defining a DRµG profile.
 
 ```python
 injection_depth = 0.4 #how deep to shove the needle in (0 is first layer, 1 is last layer)
 spread = 0.1 #how many layers to dose on either side of the injection site (0 is no layers, 1 is all layers)
-drug_profile = ([
+drug_profile = (
     {'depth': (injection_depth-(spread*1.01)), 'peakratio': 0}, #ramp up
     {'depth': (injection_depth-spread), 'peakratio': 1}, #sustained peak
     {'depth': (injection_depth+spread), 'peakratio' : 1}, #sustained peak
-    {'depth': (injection_depth+(spread*1.01)), 'peakratio' : 0}], #cool down 
-'ceil')
-drugs.set_A_dose_shape(drug_profile) 
+    {'depth': (injection_depth+(spread*1.01)), 'peakratio' : 0} #cool down
+)
+drugs.set_A_dose_shape(drug_profile, 'ceil') 
 ```
 
 For more examples, take a look at `just_chat.ipynb`
@@ -89,7 +89,7 @@ For more examples, take a look at `just_chat.ipynb`
 
 ### What is a reasonable dose of DRµGS?
 
-The `dose_theta`` parameter basically just defines a maximum angle in radians by which to randomly rotate the A, Q, K, or V vectors. You probably shouldn't go past 0.1, but this kind of depends on the DRµG type and injection sites.
+The `dose_theta`` parameter basically just defines a maximum angle in radians by which to randomly rotate the A, Q, K, V or H vectors. You probably shouldn't go past 0.1, but this kind of depends on the DRµG type and injection sites.
 
 This is also kind of where things get interesting. Consider the following starting prompt:
 
