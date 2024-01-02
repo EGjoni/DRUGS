@@ -29,7 +29,7 @@ This library includes a `cold_shower` function, which periodically sobers up the
 
 
 ### What kind of DRµGs can I use?
-While not an exhaustive list of the DRµGs that are theoretically possible, this repo provides implementations and experimental data for four types of DRµGs. These are Q, K, V, and A; which inject noise into the Query, Key, Value, and Attention head outputs, respectively.
+While not an exhaustive list of the DRµGs that are theoretically possible, this repo provides implementations and experimental data for five types of DRµGs. These are H, Q, K, V, and A; which inject noise into the Hidden state inputs, Query, Key, Value, and Attention head outputs, respectively.
 
 ### How do I use DRµGs?
 
@@ -89,7 +89,7 @@ For more examples, take a look at `just_chat.ipynb`
 
 ### What is a reasonable dose of DRµGS?
 
-The `dose_theta`` parameter basically just defines a maximum angle in radians by which to randomly rotate the A, Q, K, or V vectors. You probably shouldn't go past 0.1, but this kind of depends on the DRµG type and injection sites.
+The `dose_theta`` parameter basically just defines a maximum angle in radians by which to randomly rotate the A, Q, K, V or H vectors. You probably shouldn't go past 0.1, but this kind of depends on the DRµG type and injection sites.
 
 This is also kind of where things get interesting. Consider the following starting prompt:
 
