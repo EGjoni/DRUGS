@@ -43,7 +43,7 @@ Then, import it into your project, and decide which and how much DRµGS you want
 
 ```python
 import torch
-from nice_imports import efficiency_stuff #platform convenience
+from drugs.nice_imports import efficiency_stuff #platform convenience
 from transformers import AutoTokenizer, TextStreamer, AutoModelForCausalLM
 from drugs.dgenerate import DRUGS
 
