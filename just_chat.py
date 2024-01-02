@@ -1,7 +1,7 @@
 import time
 import bitsandbytes #not strictly necessary, used for 8bit inference
 import sys
-from nice_imports import efficiency_stuff
+from drugs.nice_imports import efficiency_stuff
 import torch
 from transformers import AutoTokenizer, TextStreamer, AutoModelForCausalLM
 from drugs.dgenerate import DRUGS
