@@ -13,7 +13,7 @@ import torch.utils.checkpoint
 import torch.random
 from torch import nn
 from transformers.models.llama.modeling_llama import repeat_kv, rotate_half, apply_rotary_pos_emb
-from drugs.generation.utils import get_perturbed_vectors
+from drugs.generation.utils import get_perturbed_vectors, verifyAverage
 from transformers.cache_utils import Cache
 
 __all__ = ["llama_drugged_attention_forward"]
@@ -35,7 +35,10 @@ def llama_drugged_attention_forward(
             )
 
         bsz, q_len, _ = hidden_states.size()
-
+        sink_protect = (position_ids < 6).sum().item()
+        if self.heroine_theta > 0:
+            hidden_states[:,sink_protect:,:] = get_perturbed_vectors(hidden_states[:,sink_protect:,:].unsqueeze(0), self.heroine_theta).squeeze(0)
+            
         if self.config.pretraining_tp > 1:
             raise RuntimeError(
                 """I have no clue what effect this has on pretraining and I suspect you weren't trying to use this as a regularization
@@ -53,7 +56,7 @@ def llama_drugged_attention_forward(
         
         """applying noise before rotatry embeddings because that just feels right (expecially with RoPE)
         and not touching the attention sink because that just feels wrong"""
-        sink_protect = (position_ids < 6).sum().item()
+        
         if self.quaalude_theta > 0:
             query_states[:,:,sink_protect:, :] = get_perturbed_vectors(query_states[:,:,sink_protect:,:], self.quaalude_theta)
 

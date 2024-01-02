@@ -28,6 +28,10 @@ def mistral_drugged_attention_forward(
                 "Passing `padding_mask` is deprecated and will be removed in v4.37. Please make sure use `attention_mask` instead.`"
             )
         bsz, q_len, _ = hidden_states.size()
+        
+        sink_protect = (position_ids < 6).sum().item()
+        if self.heroine_theta > 0:
+            hidden_states[:,sink_protect:,:] = get_perturbed_vectors(hidden_states[:,sink_protect:,:].unsqueeze(0), self.heroine_theta).squeeze(0)
 
         query_states = self.q_proj(hidden_states)
         key_states = self.k_proj(hidden_states)
@@ -37,7 +41,6 @@ def mistral_drugged_attention_forward(
         key_states = key_states.view(bsz, q_len, self.num_key_value_heads, self.head_dim).transpose(1, 2)
         value_states = value_states.view(bsz, q_len, self.num_key_value_heads, self.head_dim).transpose(1, 2)
         
-        sink_protect = (position_ids < 6).sum().item()
         if self.quaalude_theta > 0:
             query_states[:,:,sink_protect:, :] = get_perturbed_vectors(query_states[:,:,sink_protect:,:], self.quaalude_theta)
 

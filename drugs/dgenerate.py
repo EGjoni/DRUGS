@@ -16,13 +16,13 @@ logger = logging.get_logger(__name__)
 fNone = object()
 
 class DRUGS:
-    dose_theta = {'A': 0, 'Q': 0,  'K': 0, 'V': 0}
+    dose_theta = {'H': 0, 'A': 0, 'Q': 0,  'K': 0, 'V': 0}
     dose_multiplier = 1
     r_seed = -1
     state_log = {}
     do_record = False
-    dose_shapes = {'A': None, 'Q': None,  'K': None, 'V': None}
-    dose_mode =  {'A': 'interpolate', 'Q': 'interpolate',  'K': 'interpolate', 'V': 'interpolate'}
+    dose_shapes = {'H': None, 'A': None, 'Q': None,  'K': None, 'V': None}
+    dose_mode =  {'H': 'interpolate', 'A': 'interpolate', 'Q': 'interpolate',  'K': 'interpolate', 'V': 'interpolate'}
     past_key_values = DynamicCache()
     sober_interval = 420
     model = None
@@ -30,11 +30,14 @@ class DRUGS:
     cached_tokens = None
     top_log_cache = [] #for_debugging
     
-    def __init__(self, a_dose=0, q_dose=0, k_dose=0, v_dose=0, a_shape=None, q_shape=None, k_shape = None, v_shape = None):
+    def __init__(self, h_dose = 0, a_dose=0, q_dose=0, k_dose=0, v_dose=0, h_shape=None, a_shape=None, q_shape=None, k_shape = None, v_shape = None):
+        self.set_H_dose_theta(h_dose)
         self.set_A_dose_theta(a_dose)
         self.set_Q_dose_theta(q_dose)
         self.set_K_dose_theta(k_dose)
         self.set_V_dose_theta(v_dose)
+        if h_shape is not None:
+            self.set_A_dose_shape(h_shape)
         if a_shape is not None:
             self.set_A_dose_shape(a_shape)
         if q_shape is not None:
@@ -180,33 +183,91 @@ class DRUGS:
     def get_recorded_values(self):
         return self.state_log
     
-        
-    def set_dose_theta(self, radians):
-        self.set_A_dose_theta(radians)
+    
+    _dose_theta_doc = f"""
+        The maximum noise in radians that may be injected for this drug type
+        :type float:
+    """
+    _H_doc = """Hidden state noise. Applied to the hidden state vectors prior to feeding into the k, q, v projection matrices. 
+    at each head, prior to concatenation. Not super well tested, but maybe useful in early layers 
+    as an alternative to repetition penalty"""
+    def set_H_dose_theta(self, radians):
+        self.set_dose_theta(radians, 'H')
+    set_H_dose_theta.__doc__=f"""For {_H_doc}
+        :param radians: {_dose_theta_doc}"""
+    
+    _A_doc = """Attention head output noise. Applied to the vectors resulting from the attention operation 
+    at each head, prior to concatenation."""
     def set_A_dose_theta(self, radians):
-        self._set_typed_dose_theta(radians, 'A')
+        self.set_dose_theta(radians, 'A')
+    set_A_dose_theta.__doc__=f"""For {_A_doc}
+        :param radians: {_dose_theta_doc}"""
+    
+    _K_doc = """Key noise. Applied to the Key vectors in each attention head."""
     def set_K_dose_theta(self, radians):
-        self._set_typed_dose_theta(radians, 'K')
+        self.set_dose_theta(radians, 'K')
+    set_K_dose_theta.__doc__=f"""For {_K_doc}
+        :param radians: {_dose_theta_doc}"""
+    
+    _Q_doc = """Query noise. Applied to the Query vectors in each attention head."""
     def set_Q_dose_theta(self, radians):
-        self._set_typed_dose_theta(radians, 'Q')
-    def set_V_dose_theta(self, radians):
-        self._set_typed_dose_theta(radians, 'V')
+        self.set_dose_theta(radians, 'Q')
+    set_Q_dose_theta.__doc__=f"""For {_Q_doc}
+        :param radians: {_dose_theta_doc}"""
         
-    def _set_typed_dose_theta(self, radians, type):
+    _V_doc = """Value noise. Applied to the Value vectors in each attention head."""
+    def set_V_dose_theta(self, radians):
+        self.set_dose_theta(radians, 'V')
+    set_V_dose_theta.__doc__=f"""For {_V_doc}
+        :param radians: {_dose_theta_doc}"""
+        
+    _drug_type_doc = f"""
+        The type of noise being specified. Where options are any of
+        - 'Q' ({_Q_doc})
+        - 'K' ({_K_doc})
+        - 'V' ({_V_doc})
+        - 'A' ({_A_doc})
+        - 'A' ({_H_doc})
+        :type str: 
+    """   
+    def set_dose_theta(self, radians, type):
         self.dose_theta[type] = radians
         self._update_layer_doses()
+    set_dose_theta.__doc__ = f"""{_dose_theta_doc}  
+    :param type: {_drug_type_doc}"""
+    
+    _typed_interp = f"""Returns the interpolated dosage (amount of noise) at the given layer
+    :param idx: The layer to return the noise for
+    :type idx: int
+    :param total_layers: The total number of layers
+    :type total_layers: int"""
+    
+    def get_dose_theta(self, idx=None, total_layers=1, drug_type = 'A'):
+        return self._get_typed_dose_theta(idx, total_layers, drug_type)
+    get_dose_theta.__doc__=f"""{_typed_interp}
+        :param drug_type: {_drug_type_doc}"""
     
     
-    def get_dose_theta(self, idx=None, total_layers=1):
-        return self.get_A_dose_theta(idx, total_layers)
+    def get_H_dose_theta(self, idx=None, total_layers=1):
+        return self._get_typed_dose_theta(idx, total_layers, 'H')
+    get_H_dose_theta.__doc__ = f"""{_typed_interp}
+    This is for {_H_doc}"""
     def get_A_dose_theta(self, idx=None, total_layers=1):
         return self._get_typed_dose_theta(idx, total_layers, 'A')
+    get_A_dose_theta.__doc__ = f"""{_typed_interp}
+    This is for {_A_doc}"""
     def get_K_dose_theta(self, idx=None, total_layers=1):
         return self._get_typed_dose_theta(idx, total_layers, 'K')
+    get_K_dose_theta.__doc__ = f"""{_typed_interp}
+    This is for {_K_doc}"""
     def get_Q_dose_theta(self, idx=None, total_layers=1):
         return self._get_typed_dose_theta(idx, total_layers, 'Q')
+    get_Q_dose_theta.__doc__ = f"""{_typed_interp}
+    This is for {_Q_doc}"""
     def get_V_dose_theta(self, idx=None, total_layers=1):
         return self._get_typed_dose_theta(idx, total_layers, 'V')
+    get_V_dose_theta.__doc__ = f"""{_typed_interp}
+    This is for {_V_doc}"""
     
     def _get_typed_dose_theta(self, idx=None, total_layers=1, type='A'):
         if idx is not None and self.dose_shapes[type] is not None:
@@ -214,33 +275,62 @@ class DRUGS:
         else:
             return self.dose_theta[type]*self.dose_multiplier
            
-    def set_compress(self, value):
-        self.compress = value
     
-    def get_compress(self):
-        return self.compress
+    _shape_doc = f"""a list of dicts where
+        Each dict specifies:
+        - 'depth' (float): A value from 0-1 indicating the layer number as a ratio of the total layers.
+        - 'peakratio' (float): Indicating a scalar of the base dose_theta.
+    :type shape: list(dict)
+    """
+    _interp_modes_doc = f"""mode by which to interpolate between unspecified injection sites. 
+        Can be one of:
+        - 'interpolate': Smoothly increase and decrease the dose between values.
+        - 'ceil': Always sets to the highest peak_ratio of the range a layer may fall within.
+        - 'floor': Always sets to the lowest value of a range peak_ratio may fall within."""
     
-    def set_dose_shape(self, shape):
-        self.set_A_dose_shape(self, shape)
-    def set_A_dose_shape(self, shape):
-        self._set_typed_dose_shape(shape[0], shape[1], 'A')    
-    def set_K_dose_shape(self, shape):
-        self._set_typed_dose_shape(shape[0], shape[1], 'K')   
-    def set_Q_dose_shape(self, shape):
-        self._set_typed_dose_shape(shape[0], shape[1], 'Q') 
-    def set_V_dose_shape(self, shape):
-        self._set_typed_dose_shape(shape[0], shape[1], 'V') 
-
+    _moded_shape_doc = f"""
+    Sets DRUG profile of the given type and optionally dose. Any call to this function for a given type
+    will overwrite the previously set drug profile for ONLY that type.
+        :param shape: {_shape_doc}
+        :param interp_mode: {_interp_modes_doc}
+        :paran drug_type: {_drug_type_doc}
+        :param dose_theta: {_dose_theta_doc}
+    """
+    def set_drug_profile(self, shape, interp_mode, drug_type, dose_theta=None):
+        self._set_typed_dose_shape(self, shape, interp_mode, drug_type)
+        if dose_theta is not None:
+            self.set_dose_theta(dose_theta, drug_type)
+    set_drug_profile.__doc__ = _moded_shape_doc
+    
+    _typed_dose_doc = f"""
+        shape : list 
+            {_shape_doc}
+        mode : str
+            Determines how to treat dose_theta between layers. Options are:
+            {_interp_modes_doc}
+    """
+    def set_H_dose_shape(self, shape, interp_mode):
+        self._set_typed_dose_shape(shape, interp_mode, 'H')
+    set_H_dose_shape.__doc__ = f"""For {_H_doc} {_typed_dose_doc}"""
+    
+    def set_A_dose_shape(self, shape, interp_mode):
+        self._set_typed_dose_shape(shape, interp_mode, 'A')
+    set_A_dose_shape.__doc__ = f"""For {_A_doc} {_typed_dose_doc}"""
+    
+    def set_K_dose_shape(self, shape, interp_mode):
+        self._set_typed_dose_shape(shape, interp_mode, 'K')
+    set_K_dose_shape.__doc__ = f"""For {_K_doc} {_typed_dose_doc}"""   
+    
+    def set_Q_dose_shape(self, shape, interp_mode):
+        self._set_typed_dose_shape(shape, interp_mode, 'Q')
+    set_Q_dose_shape.__doc__ = f"""For {_Q_doc} {_typed_dose_doc}"""
+    
+    def set_V_dose_shape(self, shape, interp_mode):
+        self._set_typed_dose_shape(shape, interp_mode, 'V')
+    set_V_dose_shape.__doc__ = f"""For {_V_doc} {_typed_dose_doc}"""
+        
+    
     def _set_typed_dose_shape(self, shape, mode, type):
-        r'''
-            shape is specified as an array of dicts, where each dict specifies
-            {'depth': a value from 0-1 indicating the layer number as a ratio of the total layers, 
-            'peakratio': indicating a scalar of the base dose_theta}
-            mode: determines how to treat dose_theta between layers. Options are
-                'interpolate' : smoothly increase and decrease the dose between values
-                'ceil': always sets to the highest peak_ratio of the range a layer may fall within
-                'floor': always sets to the lowest value of a range peak_ratio may fall within
-        '''
         self.dose_shapes[type] = sorted(shape, key=lambda x: x['depth'])
         self.dose_mode[type] = mode
         self._update_layer_doses()
@@ -289,13 +379,14 @@ class DRUGS:
             return
         layerct = len(self.model.model.layers)
         for idx, layer in enumerate(self.model.model.layers):
-            layer.total_layers = layerct
-            layer.layer_idx = idx
-            layer.dgenerator = self.model.dgenerator
             layer.self_attn.adderall_theta = self.get_A_dose_theta(idx, layerct)
             layer.self_attn.quaalude_theta = self.get_Q_dose_theta(idx, layerct)
             layer.self_attn.ketamine_theta = self.get_K_dose_theta(idx, layerct)
             layer.self_attn.valium_theta = self.get_V_dose_theta(idx, layerct)
+            layer.self_attn.heroine_theta = self.get_H_dose_theta(idx, layerct)
+            #layer.layer_idx = idx
+            #layer.dgenerator = self.model.dgenerator
+            #layer.total_layers = layerct
     
     def get_dose_multiplier(self):
         return self.dose_multiplier    
@@ -332,8 +423,9 @@ class DRUGS:
         qthetadeg = f"{(int(self.dose_theta['Q']/3.14*180))}Q"
         kthetadeg = f"{(int(self.dose_theta['K']/3.14*180))}K"
         vthetadeg = f"{(int(self.dose_theta['V']/3.14*180))}V"
+        hthetadeg = f"{(int(self.dose_theta['H']/3.14*180))}H"
         
-        file_path = os.path.join(current_script_dir, '..', base_dir, 'results', experiment, subtype, f"injection_depth_{injection_depth}_({athetadeg}_{qthetadeg}_{kthetadeg}_{vthetadeg})-dose.msgpack")
+        file_path = os.path.join(current_script_dir, '..', base_dir, 'results', experiment, subtype, f"injection_depth_{injection_depth}_({athetadeg}_{qthetadeg}_{kthetadeg}_{vthetadeg}_{hthetadeg})-dose.msgpack")
         print(f"saving: {file_path}")
         os.makedirs(os.path.dirname(file_path), exist_ok=True)
         prediction_states = []
@@ -358,7 +450,10 @@ class DRUGS:
         brings the cached kv vectors back to a sober baseline
         """
         with torch.no_grad():
-            if self.past_key_values is None or self.dirty_count <= 0:
+            if len(self.past_key_values) == 0:
+                logger.warn("the cold_shower() function can only be called on models being run with Dgenerate")
+                return self.past_key_values
+            if self.past_key_values is None or self.dirty_count <= 0 and not force_clean:
                 return self.past_key_values
             if self.dirty_count >= self.sober_interval or force_clean:
                 max_clean = min(self.past_key_values[0][0].shape[2] - 6, self.dirty_count)
@@ -382,8 +477,14 @@ class DRUGS:
                 self.set_dose_multiplier(old_dose_multiplier)
                 self.dirty_count -= max_clean
                 del new_past_key_values
-                torch.cuda.empty_cache()
+                self.clear_cuda_caches()
         return self.past_key_values
+    
+    def clear_cuda_caches(self): 
+        """clears cache across potentially multiple devices"""
+        for i in range(torch.cuda.device_count()):
+            with torch.cuda.device(i):
+                torch.cuda.empty_cache() 
     
     def _get_truncated_cache(self, to_trunc, trunc_by):
         result = []
@@ -393,6 +494,7 @@ class DRUGS:
                 v[:, :, :-(trunc_by), :]))
         return result
     
+    #for debugging
     def decode(self, input_ids_or_logits):
         if self.tokenizer is not None:
             if len(input_ids_or_logits.shape)>2:
@@ -442,7 +544,7 @@ class DRUGS:
                 
         
     def set_sobering_rate(self, sober_interval):
-        r"""specifies the frequency with which the model should recompute drugged hidden states
+        r"""specifies the frequency with which the model should recompute drugged hidden states.
         larger values are faster but less theoretically pure
         """
         if sober_interval < self.sober_interval:
@@ -492,8 +594,8 @@ class DRUGS:
                         negative_prompt_ids = None, negative_prompt_attention_mask = None,
                         **kwargs):
         r"""creates all of the absurd shit that may or may not be needed on a per model basis, 
-        prays for salvation the whole time because the transformers library thought it would be a 
-        great idea to not make this part of its generation mixin modular."""
+        prays for salvation the whole time because the transformers library was not nice enough to make
+        the equivalent part of its generation mixin modular"""
         self.model.generation_config.pad_token_id = self.tokenizer.pad_token_id if self.model.generation_config.pad_token_id is None else self.model.generation_config.pad_token_id
         generation_config = generation_config if generation_config is not None else self.model.generation_config
         generation_config = copy.deepcopy(generation_config)
@@ -550,29 +652,59 @@ class DRUGS:
 import numpy as np
 import torch
 import torch.nn.functional as F
-def print_top_k_logits_histogram(logits, tokenizer, top_k=10, max_width=100):
+import hashlib
+
+default_index_map = None
+def set_index_base(logits):
+    "sets the base color indices to the top 240 token indices of the logits tensor provided"
+    last_logits = logits[0, -1, :]
+    top_k_indices = torch.topk(last_logits, k=240, dim=-1).indices[:240]
+    topklist = top_k_indices.tolist()
+    global default_index_map 
+    default_index_map = {}
+    for i, idx in enumerate(topklist):
+        default_index_map[idx] = i
+    
+def color_for_index(index):
+    """Return an ANSI color code for the given index."""
+    if default_index_map is not None:
+        index = default_index_map[index.item()] if index.item() in default_index_map else 0
+    return 16 + ((240-index) % 240)  # Starting from 16 to avoid the first 16 standard colors
+
+def print_top_k_logits_histogram(logits, tokenizer, top_k=10, max_width=80, softmax=True):
     """
-    Print a histogram of the top_k predicted next tokens' logits in the console,
+    Print to console a histogram of the top_k predicted next tokens' logits in the console,
     after applying a softmax to convert logits to probabilities. The token text
     and its probability are right-aligned.
 
-    :param logits: A numpy array of logits from a language model prediction.
+    :param logits: A tensor of logits from a language model prediction.
     :param tokenizer: The tokenizer used with the model to map indices to tokens.
     :param top_k: Number of top logits to display in the histogram.
     :param max_width: The maximum width of the histogram in characters.
     """
     
     last_logits = logits[0, -1, :]
-    probabilities = F.softmax(torch.tensor(last_logits), dim=-1).numpy()
-    top_k_indices = np.argsort(probabilities)[-top_k:]
-    top_k_probs = probabilities[top_k_indices]
+    probabilities = F.softmax(torch.tensor(last_logits), dim=-1)
+    top_k_indices = np.argsort(probabilities.numpy())[-top_k:]
+    np_logits = last_logits.numpy()
+    top_k_res = probabilities[top_k_indices] if softmax else np_logits[top_k_indices]
+
+    top_k_indices = np.argsort(last_logits)[-top_k:]
+    top_k_res = F.softmax(torch.tensor(last_logits), dim=-1)[top_k_indices].numpy() if softmax else last_logits[top_k_indices]
     tokens = [tokenizer.decode([idx]) for idx in top_k_indices]
     max_token_length = max(len(token) for token in tokens)
-    max_prob = max(top_k_probs)
-    scaled_probs = (top_k_probs / max_prob) * max_width
+    summed_top_k = sum(top_k_res)
+    distribution = (top_k_res / summed_top_k)
+    distribution = distribution/max(distribution)
     print("--- \n")
-    for token, prob, raw_prob in zip(tokens, scaled_probs, top_k_probs):
-        bar = '#' * int(prob)
-        prob_text = f"{raw_prob * 100:.2f}%".rjust(25)  # Probability formatted to two decimal places
-        print(f"{bar.ljust(max_width)} {token.rjust(max_token_length*2)}{prob_text}")
+    for token, prob, raw_prob, index in zip(tokens, distribution, top_k_res, top_k_indices):
+        prob_text = f"{raw_prob * 100:.2f}%"
+        text_and_prob=f"{token}  {prob_text}"
+        max_prob_text = f"""{"_"*max_token_length}  {prob_text}"""
+        barlength = int(max(0,(prob*(max_width)-(len(max_prob_text)+4))))
+        bar = '#' * barlength
+        #san_bar = len(text_and_prob.rjust(max_width)) 
+        color_code = color_for_index(index)
+        print(f"\x1b[38;5;{color_code}m{bar} {text_and_prob.rjust(max_width-barlength)}\x1b[0m ")
     print("---::::"+tokens[len(tokens)-1]+":::   \n")
+    

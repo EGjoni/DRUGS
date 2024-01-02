@@ -66,3 +66,21 @@ def get_perturbed_vectors(input_vectors, max_theta_radians):
     target_shifts = orthoshifts / torch.norm(orthoshifts, dim=-1, keepdim=True).clamp_min(eps) * target_shift_magnitudes.clamp_min(eps)
     results = input_shifts + target_shifts
     return results
+
+#for validation
+def verifyAverage(dvalues, values, max_theta):
+    dvalues_norm = torch.nn.functional.normalize(dvalues, p=2, dim=-1)
+    values_norm = torch.nn.functional.normalize(values, p=2, dim=-1)
+    dot_products = (dvalues_norm * values_norm).sum(dim=-1) 
+    angles = torch.acos(torch.clamp(dot_products, -1, 1)) 
+    result_angle = angles.mean().item()
+    result = f"average angle is {round(result_angle, 2)}, which is ~ {round(result_angle/(max_theta/2), 2)}X of expectation"
+    print(result)
+    return result
+
+def magdev(tensor):
+    magnitudes = torch.linalg.norm(tensor, dim=-1)
+    std_deviation = torch.std(magnitudes).item()
+    result = f"Standard deviation of magnitudes: {std_deviation}, which is {round(std_deviation/torch.mean(magnitudes, dim=-1).item(), 2)}x the mean"
+    print(result)
+    return result
