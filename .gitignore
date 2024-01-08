@@ -9,3 +9,4 @@ experiments/**/*.png
 *.pyc
 /build
 /DRUGS.egg-info
+total_mess/*

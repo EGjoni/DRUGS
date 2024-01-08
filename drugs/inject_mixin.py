@@ -8,40 +8,28 @@ import torch
 from transformers import PreTrainedModel
 from transformers.utils import logging
 from drugs.generation.utils import _update_model_kwargs_for_generation
+from drugs.models import *
 
 logger = logging.get_logger(__name__)
 
-MODEL_NAME_MAPPING = {
-    "llama": "LlamaModel",
+#TODO
     #"falcon": "FalconModel",
     #"mpt": "MptModel",
     #"gpt_neox": "GPTNeoXModel",
     #"gptj": "GPTJModel",
-    "mistral": "MistralModel",
     #"qwen": "QWenModel",
     #"stablelm_epoch": "StableLMEpochModel"
-}
+#falcon_drugged_attention_forward,
+    #gpt_neox_drugged_attention_forward,
+    #mpt_drugged_attention_forward,
+    #gptj_drugged_attention_forward,
 
-#TODO: support flash attention 2 and sdpa 
-ATTENTION_NAME_MAPPING = {
-    "llama": "LlamaAttention",
-    #"falcon": "FalconAttention",
-    #"mpt": "MptAttention",
-    #"gpt_neox": "GPTNeoXAttention",
-    #"gptj": "GPTJAttention",
-    "mistral": "MistralAttention",
-    #"qwen": "QWenAttention",
-    #"stablelm_epoch": "Attention",
-}
-KV_DIM_MAPPING = {
-    "llama": (2, 2),
-    "falcon": (2, 2),
-    "mpt": (2, 2),
-    "gpt_neox": (2, 2),
-    "gptj": (2, 2),
-    "mistral": (2, 2),
-    "qwen": (1, 1),
-    "stablelm_epoch": (2, 2),
+    #qwen_drugged_attention_forward,
+    #stablelm_epoch_drugged_attention_forward,
+
+MODEL_NAME_MAPPING = {
+    "llama": "LlamaModel",
+    "mistral": "MistralModel",
 }
         
 class InjectDrugsMixin:
@@ -49,45 +37,42 @@ class InjectDrugsMixin:
     def _inject_drugged_attention(cls, model: PreTrainedModel, **kwargs) -> Optional[int]:
         
         model_type = model.config.model_type
-
         from drugs.models import (
-            #falcon_drugged_attention_forward,
-            #gpt_neox_drugged_attention_forward,
-            #mpt_drugged_attention_forward,
-            #gptj_drugged_attention_forward,
+            llama_drugged_sdpa_forward,
+            llama_drugged_flash2_attention_forward,
             llama_drugged_attention_forward,
             mistral_drugged_attention_forward,
-            #qwen_drugged_attention_forward,
-            #stablelm_epoch_drugged_attention_forward,
         )
-
-        ATTENTION_FORWARD_MAPPING = {
-            "llama": llama_drugged_attention_forward,
-            #"falcon": falcon_drugged_attention_forward,
-            #"mpt": None,
-            #"gpt_neox": gpt_neox_drugged_attention_forward,
-            #"gptj": gptj_drugged_attention_forward,
-            "mistral": mistral_drugged_attention_forward,
-            #"qwen": qwen_drugged_attention_forward,
-            #"stablelm_epoch": stablelm_epoch_drugged_attention_forward,
-        }
         
+        LLAMA_ATTENTION_FORWARDS = {
+            "LlamaAttention" : llama_drugged_attention_forward,
+            "LlamaFlashAttention2" : llama_drugged_flash2_attention_forward,
+            "LlamaSdpaAttention": llama_drugged_sdpa_forward
+        }
+        MISTRAL_ATTENTION_FORWARDS = {
+            "MistralAttention" : mistral_drugged_attention_forward,
+            #"MistralFlashAttention2" : mistral_drugged_flash2_attention_forward,
+            #"MistralSdpaAttention": mistral_drugged_sdpa_forward
+        }
+        ATTENTION_NAME_MAPPINGS = {
+            "llama": LLAMA_ATTENTION_FORWARDS,
+            "mistral" : MISTRAL_ATTENTION_FORWARDS
+        }
 
         # Not all models require updated attention forwards
-        if model_type not in ATTENTION_FORWARD_MAPPING or ATTENTION_FORWARD_MAPPING[model_type] is None:
+        if model_type not in MODEL_NAME_MAPPING or MODEL_NAME_MAPPING[model_type] is None:
             return
+        
+        def overwrite_forward(module, new_func, **kwargs) -> None:
+            module.forward = types.MethodType(new_func, module, **kwargs)
 
-        #TODO: support flash attention 2 and sdpa 
-
-        def overwrite_forward(module, **kwargs) -> None:
-            module.forward = types.MethodType(ATTENTION_FORWARD_MAPPING[model_type], module, **kwargs)
-
-        return cls._call_modules_by_name(model, ATTENTION_NAME_MAPPING[model_type], overwrite_forward, **kwargs)
+        return cls._call_modules_by_name(model, ATTENTION_NAME_MAPPINGS[model_type], overwrite_forward, **kwargs)
    
     @classmethod
-    def _call_modules_by_name(cls, module, target_name: str, func: Callable, **kwargs) -> int:
-        if module.__class__.__name__ == target_name:
-            func(module)
-            return 1
+    def _call_modules_by_name(cls, module, module_dict: str, func: Callable, **kwargs) -> int:
+        for name, overwrite_with in module_dict.items():
+            if module.__class__.__name__ == name:
+                func(module, overwrite_with)
+                return 1
 
-        return sum(cls._call_modules_by_name(module, target_name, func) for module in module.children())
+        return sum(cls._call_modules_by_name(module, module_dict, func) for module in module.children())

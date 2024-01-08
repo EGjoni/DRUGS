@@ -2,19 +2,8 @@
 Adapted from https://github.com/mit-han-lab/streaming-llm
 """
 
+from drugs.models.llama.attention_imports import *
 
-import math
-from typing import Optional, Tuple
-import warnings
-
-import torch
-import torch.nn.functional as F
-import torch.utils.checkpoint
-import torch.random
-from torch import nn
-from transformers.models.llama.modeling_llama import repeat_kv, rotate_half, apply_rotary_pos_emb
-from drugs.generation.utils import get_perturbed_vectors, verifyAverage
-from transformers.cache_utils import Cache
 
 __all__ = ["llama_drugged_attention_forward"]
 
@@ -133,3 +122,5 @@ def llama_drugged_attention_forward(
             attn_weights = None
 
         return attn_output, attn_weights, past_key_value
+    
+        

@@ -1,0 +1,2717 @@
+{
+  "Alan_Watts": {
+    "state": "finished",
+    "NousResearch/Llama-2-7b-chat-hf": {
+      "state": "finished",
+      "16bit_flash": {
+        "state": "finished",
+        "Q": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          },
+          "1.5": {
+            "state": "finished"
+          }
+        },
+        "K": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "V": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "A": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "H": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        }
+      },
+      "16bit": {
+        "state": "finished",
+        "Q": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "K": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "V": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "A": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "H": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        }
+      },
+      "8bit": {
+        "state": "finished",
+        "Q": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "K": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "V": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "A": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "H": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        }
+      },
+      "8bit_flash": {
+        "state": "finished",
+        "Q": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "K": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "V": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "A": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "H": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        }
+      }
+    },
+    "cognitivecomputations/dolphin-2.2.1-mistral-7b": {
+      "state": "in_progress",
+      "16bit": {
+        "state": "in_progress",
+        "Q": {
+          "state": "in_progress",
+          "0.01": {
+            "state": "finished"
+          }
+        }
+      }
+    },
+    "TheBloke/30B-Epsilon-AWQ": {
+      "state": "finished",
+      "4bit": {
+        "state": "finished",
+        "Q": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "K": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "V": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "A": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "H": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        }
+      }
+    }
+  },
+  "Alan_Watts_Meaning": {
+    "state": "finished",
+    "NousResearch/Llama-2-7b-chat-hf": {
+      "state": "finished",
+      "16bit_flash": {
+        "state": "finished",
+        "Q": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "K": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "V": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "A": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "H": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        }
+      },
+      "8bit_flash": {
+        "state": "finished",
+        "Q": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "K": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "V": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "A": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "H": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        }
+      },
+      "8bit": {
+        "state": "finished",
+        "Q": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "K": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "V": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "A": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "H": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        }
+      },
+      "16bit": {
+        "state": "finished",
+        "Q": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "K": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "V": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "A": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "H": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        }
+      }
+    },
+    "cognitivecomputations/dolphin-2.2.1-mistral-7b": {
+      "state": "finished",
+      "16bit": {
+        "state": "finished",
+        "Q": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "K": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "V": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "A": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "H": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        }
+      },
+      "8bit": {
+        "state": "finished",
+        "Q": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "K": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "V": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "A": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "H": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        }
+      }
+    },
+    "TheBloke/30B-Epsilon-AWQ": {
+      "state": "finished",
+      "4bit": {
+        "state": "finished",
+        "Q": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "K": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "V": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "A": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "H": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        }
+      }
+    }
+  },
+  "Reason_then_create": {
+    "state": "in_progress",
+    "cognitivecomputations/dolphin-2.2.1-mistral-7b": {
+      "state": "finished",
+      "16bit": {
+        "state": "finished",
+        "Q": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "K": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "V": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "A": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "H": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        }
+      }
+    },
+    "TheBloke/30B-Epsilon-AWQ": {
+      "state": "in_progress",
+      "4bit": {
+        "state": "finished",
+        "Q": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "K": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "V": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "A": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "H": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        }
+      },
+      "4bit_flash": {
+        "state": "in_progress",
+        "Q": {
+          "state": "in_progress",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          }
+        }
+      }
+    },
+    "NousResearch/Llama-2-7b-chat-hf": {
+      "state": "in_progress",
+      "16bit_flash": {
+        "state": "finished",
+        "Q": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "K": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "V": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "A": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "H": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        }
+      },
+      "8bit_flash": {
+        "state": "finished",
+        "Q": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "K": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "V": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "A": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "H": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        }
+      },
+      "8bit": {
+        "state": "finished",
+        "Q": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "K": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "V": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "A": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "H": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        }
+      },
+      "16bit": {
+        "state": "in_progress",
+        "Q": {
+          "state": "finished",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          },
+          "0.2": {
+            "state": "finished"
+          },
+          "0.35": {
+            "state": "finished"
+          },
+          "0.5": {
+            "state": "finished"
+          },
+          "0.8": {
+            "state": "finished"
+          },
+          "1": {
+            "state": "finished"
+          }
+        },
+        "K": {
+          "state": "in_progress",
+          "0.01": {
+            "state": "finished"
+          },
+          "0.05": {
+            "state": "finished"
+          },
+          "0.1": {
+            "state": "finished"
+          },
+          "0.15": {
+            "state": "finished"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Structure</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/diff_match_patch/20121119/diff_match_patch.js"></script>
+</head>
+
+<body>
+    <div id="menuContainer">
+        <div class="model_selector">
+            <label for="model_selector">Model:</label>
+            <select id="model_selector"></select>
+        </div>
+        <div class="experiment_selector">
+            <label for="experiment_selector">Experiment:</label>
+            <select id="experiment_selector"></select>
+        </div>
+        <div class="quantization_selector">
+            <div id="quantization_selector">
+                <fieldset class="radio-container"><legend>Quantization level/mode: </legend>
+                
+                </fieldset>
+            </div>
+        </div>
+        <div class="drug_selector">           
+            <div id="drug_selector"> 
+                <fieldset class="radio-container"><legend>DRµG type: </legend>
+                </fieldset>
+            </div>
+        </div>
+        <div id="dose_container">
+            <div id="comparisons">
+                <div id="left_text">
+                    <div class="dose_selector">
+                        <fieldset for="thetaslider_left"> <legend>Dose Theta:</legend>
+                            <input type="range" class="slider" min="1" max="100" step="any"
+                                id="thetaslider_left">
+                            <output id="sliderValue" for="thetaslider_left">0.2</output>
+                        </fieldset>
+                    </div>
+                    <div class="seed_content">
+                        <div class="seed_selector radio-container">
+                            <fieldset class = "seed_selectorfield"><legend>Seed: </legend>
+                            </fieldset>
+                        </div>
+                        <div class="text_content"></div>
+                    </div>
+                </div>
+                <div id="right_text">
+                    <div class="dose_selector">
+                        <fieldset for="thetaslider_right"> <legend>Dose Theta:</legend>
+                            <input type="range" class="slider" min="1" max="100" step="any"
+                                id="thetaslider_right">
+                            <output id="sliderValue" for="thetaslider_right">0.2</output>
+                        </fieldset>                        
+                    </div>
+                    <div class="seed_content">
+                        <div class="seed_selector radio-container">
+                            <fieldset class = "seed_selectorfield"><legend>Seed: </legend>
+                            </fieldset>
+                        </div>
+                        <div class="text_content"></div>
+                    </div>                    
+                </div>
+                <div class="generation_config"></div>
+            </div>            
+        </div>
+       
+    </div>
+
+    <!--<div id="template_container" style="display:none">
+        
+        <div class="model_container">
+            <div class="experiment_selector"></div>
+            <div class="experiment_options"></div>
+        </div>
+
+        <div class="experiment_container">
+            <div class="experiment_name"></div>
+
+            <div class="quantization_options"></div>
+        </div>
+
+        <div class="quantization_container">
+
+            <div class="drug_options">
+            </div>
+        </div>
+
+        <div class="drug_container">
+
+            <div class="dose_options"></div>
+        </div>
+
+        <div class="dose_container">
+            <div class="comparisons">
+                <div class="left_text"></div>
+                <div class="right_text"></div>
+            </div>
+            <div class="generation_config"></div>
+        </div>
+
+        <div class="text_container">
+            <div class="seed_selector"></div>
+            <div class="seed_options"></div>
+        </div>
+
+        <div class="seed_container">
+            <div class="text_content"></div>
+        </div>
+        <div class="placeholder"></div>
+    
+
+        <input type="range" class="slider" min="1" max="100" list="tickmarks" step="any" id="thetaslider">
+        <output id="sliderValue" for="thetaslider">0.2</output>
+        <datalist id="tickmarks-base" class="tickbases">
+            <option value="1" label="0.001">0.001</option>
+            <option value="5" label="0.05">0.05</option>
+            <option value="10" label="0.1">0.1</option>
+            <option value="15" label="0.15">0.15</option>
+            <option value="20" label="0.2">0.2</option>
+            <option value="30" label="0.35">0.35</option>
+            <option value="50" label="0.5">0.5</option>
+            <option value="80" label="0.8">0.8</option>
+            <option value="100" label="1.0">1.0</option>
+        </datalist>
+        <option class='tick-option' value="" label=""></option>
+    </div>-->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="text_from_dirstruct.js"></script>
+    <link rel="stylesheet" href="base.css">
+
+</body>
+
+</html>

@@ -35,7 +35,9 @@ from .llama import (
     LlamaForCausalLM, 
     LlamaForSequenceClassification, 
     LlamaModel,
-    llama_drugged_attention_forward
+    llama_drugged_attention_forward,
+    llama_drugged_flash2_attention_forward,
+    llama_drugged_sdpa_forward
 )
 from .mistral import (
     MistralForCausalLM,

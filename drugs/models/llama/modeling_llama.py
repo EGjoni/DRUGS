@@ -1,14 +1,11 @@
 import warnings
 from transformers import LlamaForCausalLM as TLlamaForCausalLM
 from transformers import LlamaForSequenceClassification as TLlamaForSequenceClassification
-from transformers import LlamaModel
+from transformers.models.llama.modeling_llama import LlamaModel, LlamaAttention
 from transformers import LlamaPreTrainedModel as TLlamaPreTrainedModel
-from transformers.models.llama.modeling_llama import LlamaDecoderLayer
-from transformers.models.llama.modeling_llama import LlamaConfig, LlamaRMSNorm
-import torch.nn as nn
+
 from drugs.inject_mixin import InjectDrugsMixin
-import torch
-from typing import Optional, Tuple, List, Union
+from transformers import LlamaPreTrainedModel as TLlamaPreTrainedModel
 
 class LlamaPreTrainedModel(InjectDrugsMixin, TLlamaPreTrainedModel):
     pass

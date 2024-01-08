@@ -54,6 +54,8 @@ def get_perturbed_vectors(input_vectors, max_theta_radians):
         middleschool trig rotation in n-dimensional space
         max_theta_radians : defines the maximum angle in radians to rotate input vectors by in a random direction.
     """
+    if max_theta_radians == 0:
+        return torch.clone(input_vectors)
     eps = torch.finfo(input_vectors.dtype).eps
     random_angles = torch.rand_like(input_vectors[:,:,:,0], device=input_vectors.device, dtype=input_vectors.dtype) * max_theta_radians
     #The next three lines are an old family recipe for cooking up orthogonal vectors.
@@ -69,13 +71,15 @@ def get_perturbed_vectors(input_vectors, max_theta_radians):
 
 #for validation
 def verifyAverage(dvalues, values, max_theta):
-    dvalues_norm = torch.nn.functional.normalize(dvalues, p=2, dim=-1)
-    values_norm = torch.nn.functional.normalize(values, p=2, dim=-1)
+    dvalues64 = dvalues.to(dtype=torch.float64)
+    values64 = values.to(dtype=torch.float64)
+    dvalues_norm = torch.nn.functional.normalize(dvalues64, p=2, dim=-1)
+    values_norm = torch.nn.functional.normalize(values64, p=2, dim=-1)
     dot_products = (dvalues_norm * values_norm).sum(dim=-1) 
     angles = torch.acos(torch.clamp(dot_products, -1, 1)) 
     result_angle = angles.mean().item()
-    result = f"average angle is {round(result_angle, 2)}, which is ~ {round(result_angle/(max_theta/2), 2)}X of expectation"
-    print(result)
+    result = f"average angle is {round(result_angle, 5)}, which is ~ {round(result_angle/(max_theta/2), 2)}X of expectation"
+    #print(result)
     return result
 
 def magdev(tensor):

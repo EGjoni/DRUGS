@@ -1,0 +1,282 @@
+body{
+    background: #c9c9c9;
+}
+
+.experiment_name {
+    font-size: 2em;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
+}
+/* Hide the default radio button visually, but allow it to be focused */
+.radio-container input[type="radio"] {
+opacity: 0;
+position: absolute;
+width: 0;
+height: 0;
+}
+
+/* Style for the custom radio appearance */
+.radio-container label {
+display: inline-block;
+padding: 10px 20px; /* Larger padding for a larger clickable area */
+padding-left: 40px; /* Increase left padding to make space for the circle */
+filter: drop-shadow(0px 0px 6px #0006);
+background: #d8d8d8;
+margin: 5px; /* Spacing between radio options */
+cursor: pointer;
+border: 2px solid #ddd; /* Custom radio border */
+border-radius: 15px; /* Rounded corners for the label */
+position: relative; /* To position the pseudo-elements */
+text-align: right; /* Right justify the text */
+}
+
+/* Pseudo-element for custom radio appearance */
+.radio-container label::before {
+content: '';
+position: absolute;
+left: 10px; /* Position the circle on the far left within the padding area */
+top: 50%;
+transform: translateY(-50%);
+width: 20px; /* Width of the custom radio */
+height: 20px; /* Height of the custom radio */
+border-radius: 50%; /* Make it round */
+background: white;
+border: 2px solid #ccc; /* Custom radio border */
+}
+
+/* Change appearance when radio button is checked */
+.radio-container input[type="radio"]:checked + label::before {
+background: #009688; /* Active state color */
+border-color: #00796B; /* Darken the border a bit */
+}
+
+/* Optional: Change label appearance when radio button is focused */
+.radio-container input[type="radio"]:focus + label {
+outline: 2px auto #5b9dd9; /* Adjust as needed */
+}
+
+.comparisons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.left-text {
+    display: block;
+    flex-shrink: 0.5;
+    flex-grow: 0.5;
+}
+
+.left_text {
+    display: inline-block;
+    /* flex-shrink: 0.97; */
+    flex-grow: 1;
+    width: 100%;
+}
+
+.right_text {
+    display: inline-block;
+    width: 100%;
+    flex-grow: 1;
+}
+
+
+.dose_selector {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    justify-content: center;
+    /*! margin: 1em; */
+    justify-self: inherit;
+    width: 100%;
+    /* margin-left: -40px; */
+    /* margin-right: -40px; */
+    align-content: center;
+}
+
+
+.slider {
+    min-width: 5em;
+    min-height: 1em;
+    display: block;
+    width: 90%;
+    /*! max-width: 30em; */ /* Full-width */
+    margin: auto; /* Margin for visual spacing */
+    /*! transform: scale(1.5); */
+  }
+  
+  
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+   
+    width: 20px;
+    height: 20px;
+    background: #4CAF50;
+    cursor: pointer;
+  }
+  
+  .slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: #4CAF50;
+    cursor: pointer;
+  }
+  
+  .slider::-ms-thumb {
+    width: 20px;
+    height: 20px;
+    background: #4CAF50;
+    cursor: pointer;
+  }
+
+  .hidden {
+    display: none;
+  }
+
+
+select {
+    font-size: 1.6em;
+}
+
+.text_content {
+    /* display: initial; */
+    white-space: pre-line;
+    font-family: sans-serif;
+}
+
+ins {
+    /* background-color: #bbffbb94; */
+    text-decoration: none;
+}
+
+.insert { 
+    background-color: #bbffbb94;
+    text-decoration: none; 
+}
+
+del {
+    display: inline-block;
+    font-size: 0em;
+    color: #0000;
+    border-style: solid;
+    border-color: #ff000094;
+    border-radius: 4px;
+    text-wrap: nowrap;
+    margin: 4px -3px -7px -3px;
+    top: -4px;
+    height: 1em;
+    position: relative;
+    z-index: 0;
+}
+
+del:hover {
+    height: 0px;
+  }
+
+  del:hover > .hoverdel {
+    display: block;
+    background: #ffe6e6;
+    width: 10em;
+    border-block-color: red;
+    color: black;
+    border-width: 3px;
+    border-style: solid;
+    border-radius: 9px;
+    position: absolute;
+    min-width: fit-content;
+    font-size: 0.9em;
+  }
+
+.dose_selector > div, .dose_selector > label {
+    display: block;
+    width: 70%;
+    align-self: center;
+    font-size: 1.2em;
+    font-family: sans-serif;
+}
+
+.generation_config {
+    background: white;
+    border-color: #0008;
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 10px;
+    padding: 0em 2em;
+    font-family: sans-serif;
+    margin: 2em auto;
+    max-width: 50em;
+    justify-self: center;}
+
+pre {
+    overflow: auto;
+    background: #333;
+    color: #BBB;
+    padding: 2em;
+}
+
+div#comparisons {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+}
+
+#comparisons > * {
+    display: block;
+    max-width: 40em;
+    margin: 1em;
+    width: 100%;
+    flex-grow: 1;
+    flex-shrink: 1;
+}
+
+.seed_content.loading_hint {
+    filter: blur(4px);
+    transition: 0.15s;
+  }
+
+  .diffcode {
+    display: flex;
+    flex-direction: row;
+  }
+  .diffcode > pre:first-child {
+    margin-right: 5px;
+    margin-left: 0px;
+  }
+  .diffcode > pre {
+    margin-left: 5px;
+  }
+
+
+  .split_thetas {
+    display: flex;
+    flex-direction: row;
+    /*! align-content: unsafe; */
+  }
+  .left_info_theta {
+    display: block;
+    width: 100%;
+  }
+  .right_info_theta {
+    display: block;
+    width: 100%;
+    text-align: right;
+  }
+  .generation_config > h1:first-child {
+    text-align: center;
+  }
+
+  .model_selector * {
+    font-size: 1.6em;
+    font-family: sans;
+  }
+  .experiment_selector * {
+    font-size: 1.5em;
+    font-family: sans;
+  }
+  .quantization_selector {
+    /*! padding: ; */
+    margin-top: 1em;
+  }
+  #sliderValue {
+    display: inline;
+  }

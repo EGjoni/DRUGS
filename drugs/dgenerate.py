@@ -5,7 +5,7 @@ import types
 import inspect
 import copy
 from typing import Optional, List, Callable
-from drugs.inject_mixin import InjectDrugsMixin, ATTENTION_NAME_MAPPING, MODEL_NAME_MAPPING, KV_DIM_MAPPING
+from drugs.inject_mixin import InjectDrugsMixin, MODEL_NAME_MAPPING
 from transformers import GenerationMixin
 from transformers.cache_utils import DynamicCache
 from transformers.generation.utils import LogitsProcessorList, StoppingCriteriaList
@@ -30,7 +30,7 @@ class DRUGS:
     cached_tokens = None
     top_log_cache = [] #for_debugging
     
-    def __init__(self, h_dose = 0, a_dose=0, q_dose=0, k_dose=0, v_dose=0, h_shape=None, a_shape=None, q_shape=None, k_shape = None, v_shape = None):
+    def __init__(self, h_dose = 0, a_dose=0, q_dose=0, k_dose=0, v_dose=0, h_shape=None, a_shape=None, q_shape=None, k_shape = None, v_shape = None, tokenizer= None):
         self.set_H_dose_theta(h_dose)
         self.set_A_dose_theta(a_dose)
         self.set_Q_dose_theta(q_dose)
@@ -66,16 +66,20 @@ class DRUGS:
             sampler : Optional[Callable[[torch.tensor, #logits and scores for you
                                          torch.tensor, #hidden states for you
                                          ], torch.tensor #selected token id for me
-                                ]] = None
+                                ]] = None,
+            protect_inputs: Optional[bool] = True
         ):
         r""" 
-            the last sampler parameter allows you to pass in some sampling callback, 
-            provides logits and logitprocessor scores, expects you to provide the selected token.
-            the default is just argmax. 
-            Note that for flexibility, logits are provided as predictions for every input token,
-            but scores are provided only for the predicted next token. You can convert logits to the
-            same shape with logits[:,-1,:]
-            the sampler callback is expected to return a tensor of shape [1]
+            past_key_values -- you must explicitly set this to None if you want to start a new sequence, otherwise Dgenerate will continue where you left off.
+            protect_inputs -- by default, DGenerate does not add noise to the initial inputs so as to maintain
+                a clean baseline. Setting to false will override this behavior, for increased variety but less theoretical purity
+            sampler -- parameter allows you to pass in some sampling callback, 
+                        provides logits and logitprocessor scores, expects you to provide the selected token.
+                        the default is just argmax. 
+                        Note that for flexibility, logits are provided as predictions for every input token,
+                        but scores are provided only for the predicted next token. You can convert logits to the
+                        same shape with logits[:,-1,:]
+                        the sampler callback is expected to return a tensor of shape [1]
         """
         if past_key_values is not fNone:
             self.past_key_values = past_key_values
@@ -84,11 +88,11 @@ class DRUGS:
             if sampler is None:
                 sampler = self.argmax_select_next_token
             if self.cached_tokens is None:
-                self.cached_tokens = torch.empty((*input_ids.shape[:-1], 0), dtype=input_ids.dtype, device=input_ids.device)
+                self.cached_tokens = torch.empty((*input_ids.shape[:-1], 0), dtype=input_ids.dtype, device=self.model.device)
                 self.dirty_count = -6
             
-            self.cached_tokens = torch.cat((self.cached_tokens, input_ids), dim=-1)
-            gend_tokens = torch.empty((*input_ids.shape[:-1], 0), dtype=input_ids.dtype, device=input_ids.device)
+            self.cached_tokens = torch.cat((self.cached_tokens, input_ids.to(self.model.device)), dim=-1)
+            gend_tokens = torch.empty((*input_ids.shape[:-1], 0), dtype=input_ids.dtype).to(self.model.device)
             
             if streamer is not None:
                 self.streamer = streamer
@@ -99,7 +103,8 @@ class DRUGS:
             self.maybe_print(streamer, tokenizer, input_ids)
             
             old_dose_multiplier = self.get_dose_multiplier()
-            self.set_dose_multiplier(0) #don't noise anything until we start generating from it
+            if protect_inputs:
+                self.set_dose_multiplier(0) #don't noise anything until we start generating from it
             t_input_ids, model_kwargs, logits_processor, stopping_criteria, gen_conf = self.go_through_hell(
                     self.cached_tokens,
                     logits_processor=logits_processor, 
@@ -111,7 +116,7 @@ class DRUGS:
                 )
             unfinished_sequences = torch.ones(t_input_ids.shape[0], dtype=torch.long, device=t_input_ids.device)
             
-            model_inputs = self.model.prepare_inputs_for_generation(input_ids=t_input_ids, past_key_values = self.past_key_values, **model_kwargs)
+            model_inputs = self.model.prepare_inputs_for_generation(input_ids=t_input_ids.to(self.model.device), past_key_values = self.past_key_values, **model_kwargs)
             outputs = self.model(**model_inputs)
             model_kwargs = self.model._update_model_kwargs_for_generation(outputs, model_kwargs, is_encoder_decoder= False)
             self.past_key_values = model_kwargs['past_key_values']
@@ -165,6 +170,16 @@ class DRUGS:
         self.past_key_values = DynamicCache()
         self.cached_tokens = None
         self.dirty_count = -6
+        
+    def detox(self):
+        r"""
+        clears all drug profiles and sets all dose_thetas to 0
+        """
+        for drug_type, val in self.dose_theta.items():
+            self.dose_theta[drug_type] = 0
+            self.dose_shapes[drug_type] = None
+            self.dose_mode[drug_type] = 'interpolate'
+        self._update_layer_doses()
         
     def record_value(self, token_num, value):
         if token_num not in self.state_log:
@@ -297,7 +312,7 @@ class DRUGS:
         :param dose_theta: {_dose_theta_doc}
     """
     def set_drug_profile(self, shape, interp_mode, drug_type, dose_theta=None):
-        self._set_typed_dose_shape(self, shape, interp_mode, drug_type)
+        self._set_typed_dose_shape(shape, interp_mode, drug_type)
         if dose_theta is not None:
             self.set_dose_theta(dose_theta, drug_type)
     set_drug_profile.__doc__ = _moded_shape_doc
@@ -462,7 +477,7 @@ class DRUGS:
                 regen_tokens = self.cached_tokens[:, -(max_clean+1):-1]        
                 old_dose_multiplier = self.get_dose_multiplier()
                 self.set_dose_multiplier(0)
-                outputs = self.model(input_ids=regen_tokens, past_key_values=new_past_key_values, use_cache=True)
+                outputs = self.model(input_ids=regen_tokens.to(self.model.device), past_key_values=new_past_key_values, use_cache=True)
                 self.past_key_values = DynamicCache()
                 for i, (k, v) in enumerate(outputs.past_key_values):
                     self.past_key_values.update(k, v, i)
@@ -497,7 +512,9 @@ class DRUGS:
     #for debugging
     def decode(self, input_ids_or_logits):
         if self.tokenizer is not None:
-            if len(input_ids_or_logits.shape)>2:
+            if(isinstance(input_ids_or_logits, list)):
+                return self.tokenizer.decode(input_ids_or_logits)
+            elif len(input_ids_or_logits.shape)>2:
                 input_ids = self.argmax_select_next_token(input_ids_or_logits, None)
             else: 
                 input_ids = input_ids_or_logits

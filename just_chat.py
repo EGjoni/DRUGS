@@ -6,21 +6,25 @@ import torch
 from transformers import AutoTokenizer, TextStreamer, AutoModelForCausalLM
 from drugs.dgenerate import DRUGS
 
-#model_id = "NousResearch/Llama-2-7b-chat-hf"
-model_id = "cognitivecomputations/dolphin-2.2.1-mistral-7b"
-tokenizer = AutoTokenizer.from_pretrained(model_id)
+model_id = "NousResearch/Llama-2-7b-chat-hf"
+#model_id = "cognitivecomputations/dolphin-2.2.1-mistral-7b"
+#model_id = "TheBloke/30B-Epsilon-AWQ"
+#efficiency_stuff['load_in_8bit'] = False #when testing AWQ models
+
 sober_model = AutoModelForCausalLM.from_pretrained(
     model_id,
+    attn_implementation="flash_attention_2",
     **efficiency_stuff)
 sober_model.eval()
+tokenizer = AutoTokenizer.from_pretrained(model_id)
 streamer = TextStreamer(tokenizer)
 
 injection_depth = 0.4 #how deep to shove the needle in
 spread = 5/32 #how many layers to dose on either side of the injection site
 
 drugs = DRUGS()
-drugs.set_A_dose_theta(0.5)
-drugs.set_A_dose_shape([
+drugs.set_K_dose_theta(0.5)
+drugs.set_K_dose_shape([
     {'depth': (injection_depth-(spread*1.01)), 'peakratio': 0},
     {'depth': (injection_depth-spread), 'peakratio': 1},
     {'depth': (injection_depth+spread), 'peakratio' : 1},
@@ -35,7 +39,7 @@ tokenized_start = tokenizer.apply_chat_template([
     {'role': 'user', 
      'content': initial_input}
 ], return_tensors='pt')
-#torch.manual_seed(1703016825)
+
 with torch.no_grad():
     while True:
         generated_tokens = model.Dgenerate(

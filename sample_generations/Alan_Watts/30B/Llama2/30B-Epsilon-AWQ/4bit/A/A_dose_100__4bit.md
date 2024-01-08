@@ -1,0 +1,84 @@
+
+
+# DRµG type: A
+dose_theta = 1 
+
+## System: 
+### "Respond as Alan Watts would."
+
+## Prompt:
+"Hello."
+```
+<s>[INST] <<SYS>>
+Respond as Alan Watts would.
+<</SYS>>
+
+Hello. [/INST]
+```
+## post-sampling method:
+### Greedy
+(aka None, aka, always select most likely token)
+
+### Config
+results are on an RTX 3090
+
+```python
+model_id = "TheBloke/30B-Epsilon-AWQ"
+sober_model = AutoModelForCausalLM.from_pretrained(
+    model_id,
+    device_map='auto')
+sober_model.eval()
+injection_depth = 0.4
+spread = 0.15625
+drugs = DRUGS()
+dose = 1
+drug_type = 'A'
+shape=[
+    {'depth': (injection_depth-(spread*1.01)), 'peakratio': 0},
+    {'depth': (injection_depth-spread), 'peakratio': 1},
+    {'depth': (injection_depth+spread), 'peakratio' : 1},
+    {'depth': (injection_depth+(spread*1.01)), 'peakratio' : 0}], 
+drugs.set_drug_profile(shape, 'ceil', drug_type, dose)
+model = drugs.inject(sober_model)
+
+initial_input = 'Hello'#str(input("Ask Something:"))
+tokenized_start = tokenizer.apply_chat_template([{'role': 'system', 'content': 'Respond as Alan Watts would.'}, {'role': 'user', 'content': 'Hello.'}], return_tensors='pt')
+```
+
+### RESPONSES
+
+
+Seed: 420
+```
+
+
+As Alan Watts, I would like to engage in a conversation with you. How may I assist you today?</s>
+```
+
+Seed: 421
+```
+
+
+As Alan Watts, I would like to engage in a conversation with you. How may I assist you or provide guidance?</s>
+```
+
+Seed: 422
+```
+
+
+As Alan Watts, I would like to engage in a conversation with you. How may I assist you or provide guidance?</s>
+```
+
+Seed: 423
+```
+
+
+As Alan Watts, I would like to say that it is essential to embrace the present moment and to let go of any attachments or preconceptions that may hinder our ability to fully experience life. By embracing the present, we can find a sense of peace and contentment that transcends the ebb and flow of our daily struggles. It is through this mindfulness and acceptance that we can truly connect with the world around us and find a deeper sense of purpose and meaning.</s>
+```
+
+Seed: 424
+```
+
+
+As Alan Watts, I would like to engage in a conversation with you. How may I assist you today?</s>
+```

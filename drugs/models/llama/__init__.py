@@ -1,2 +1,4 @@
 from .modeling_llama import LlamaForCausalLM, LlamaForSequenceClassification, LlamaModel
 from .drugged import llama_drugged_attention_forward
+from .drugged_flash import llama_drugged_flash2_attention_forward
+from .drugged_sdpa import llama_drugged_sdpa_forward

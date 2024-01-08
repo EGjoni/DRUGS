@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="DRUGS",
-    version="0.0.2",
+    version="0.0.3",
     author="Eron Gjoni",
     author_email="rufsketch1@gmail.com",
     description="A transformers module for increasing model output diversity by noise injection",
