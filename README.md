@@ -14,7 +14,8 @@ DRµGS just inverts this scheme. Instead of using noise to sample from the model
 Intuitively, the primary advantage of this scheme (though there's more than one) is that the model has ample opportunity in its later layers to correct or account for our perturbations in its earlier layers.
 
 ------------
-https://github.com/EGjoni/DRUGS/assets/1353635/ab85fed4-7d52-4855-a0c8-3ebf076931be
+
+https://github.com/EGjoni/DRUGS/assets/1353635/2165d1d8-c463-4133-9847-38caa0cd8868
 
 ##### [New: Click here for an interactive version of the video above.](https://egjoni.github.io/DRUGS/sample_generations/)
 
