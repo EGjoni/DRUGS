@@ -1,14 +1,7 @@
 # DRµGS
 ### Stop messing around with sampling parameters and just use DRµGS!
 This repo introduces Deep Random Micro-Glitch Sampling (DRµGS).
-
-
-https://github.com/EGjoni/DRUGS/assets/1353635/ab85fed4-7d52-4855-a0c8-3ebf076931be
-
-##### [Click here for an interactive version of the video above.](https://egjoni.github.io/DRUGS/sample_generations/)
-
-
-#### [ALSO NEW: Are you interested in distributing DRµGS? Click here to read the porting guide!](https://github.com/EGjoni/DRUGS/blob/main/porting/A%20Guide%20to%20Making%20DRUGS.md)
+#### [NEW: Are you interested in distributing DRµGS? Click here to read the porting guide!](https://github.com/EGjoni/DRUGS/blob/main/porting/A%20Guide%20to%20Making%20DRUGS.md)
 
 ## The Problem:
 At a high level, the generative modeling landscape looks like first spending millions of dollars pretraining a giant model to predict the collective works of humanity, then giving those predictions to a dumb-as-rocks random number generator to kindly take into consideration in its role as the final arbiter over the multi-million dollar model's canonical output (which the model is then forced to commit to on its next prediction pass).
@@ -20,12 +13,20 @@ DRµGS just inverts this scheme. Instead of using noise to sample from the model
 
 Intuitively, the primary advantage of this scheme (though there's more than one) is that the model has ample opportunity in its later layers to correct or account for our perturbations in its earlier layers.
 
+------------
+https://github.com/EGjoni/DRUGS/assets/1353635/ab85fed4-7d52-4855-a0c8-3ebf076931be
+
+##### [New: Click here for an interactive version of the video above.](https://egjoni.github.io/DRUGS/sample_generations/)
+
+------------
+
 ### Should I use DRµGS?
 Absolutely. But do note that this proof of concept repo only supports LLaMA and mistral models. This isn't a technical limitation, and I'm very open to contributions from anyone willing to help me make DRµGS.
 
 You can get a sense of its generation quality in this colab chat with Alan Watts.
-
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1-1TpLb4fcdUU-zahaKY_TOr7jI-88DdQ?usp=sharing)
+
+Or using this [generation explorer for a more systematic and (less compute-intensive) alternative](https://egjoni.github.io/DRUGS/sample_generations/).
 
 ### Are there any negative side effects from using DRµGS?
 Negative side effects are difficult to identify subjectively, and in my experience DRµGs feel great the whole time you're using them.
@@ -37,7 +38,9 @@ This library includes a `cold_shower` function, which periodically sobers up the
 
 
 ### What kind of DRµGs can I use?
-While not an exhaustive list of the DRµGs that are theoretically possible, this repo provides implementations and experimental data for five types of DRµGs. These are H, Q, K, V, and A; which inject noise into the Hidden state inputs, Query, Key, Value, and Attention head outputs, respectively.
+While [not an exhaustive list](https://github.com/EGjoni/DRUGS/blob/main/porting/A%20Guide%20to%20Making%20DRUGS.md) of the DRµGs that are theoretically possible, this repo provides implementations and experimental data for five types of DRµGs. These are H, Q, K, V, and A; which inject noise into the Hidden state inputs, Query, Key, Value, and Attention head outputs, respectively. 
+
+You can get a sense of their effects on Llama-30B, Llama2-7B, and Mistral-7B variants over a range of experiments and dosages [using this interactive page](https://egjoni.github.io/DRUGS/sample_generations/).
 
 ### How do I use DRµGs?
 
@@ -156,8 +159,9 @@ Second, something special seems to happen in the middle layers that causes relat
 
 And third, the most likely prediction changes, but generally remains reasonable.
 
-I feel like there's a lot more to play with and discover here, but, it's gonna need crowdsourcing. Personally my next step is to (very seriously) explore the potential of DRµGS to control model hallucinations.
+I feel like there's a lot more to play with and discover here, but, it's gonna need crowdsourcing. I made a [generations explorer](https://egjoni.github.io/DRUGS/sample_generations/) in the hopes of making that easier. If you get a chance to look through it, I would greatly appreciate notes on any general patterns you think you see or hypotheses you come up with.
 
+Personally my next step is to (very seriously) explore the potential of DRµGS to control model hallucinations.
 
 Anyway -- critiques and contributions welcome. And I'll have a mistral implementation up ~soon~ right now. It's up. 
 
