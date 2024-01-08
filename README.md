@@ -5,10 +5,10 @@ This repo introduces Deep Random Micro-Glitch Sampling (DRµGS).
 
 https://github.com/EGjoni/DRUGS/assets/1353635/ab85fed4-7d52-4855-a0c8-3ebf076931be
 
-[Click here for an interactive version of the video above.](https://egjoni.github.io/DRUGS/sample_generations/)
+##### [Click here for an interactive version of the video above.](https://egjoni.github.io/DRUGS/sample_generations/)
 
 
-#### [NEW: Are you interested in distributing DRµGS? Click here to read the porting guide!](https://github.com/EGjoni/DRUGS/blob/main/porting/A%20Guide%20to%20Making%20DRUGS.md)
+#### [ALSO NEW: Are you interested in distributing DRµGS? Click here to read the porting guide!](https://github.com/EGjoni/DRUGS/blob/main/porting/A%20Guide%20to%20Making%20DRUGS.md)
 
 ## The Problem:
 At a high level, the generative modeling landscape looks like first spending millions of dollars pretraining a giant model to predict the collective works of humanity, then giving those predictions to a dumb-as-rocks random number generator to kindly take into consideration in its role as the final arbiter over the multi-million dollar model's canonical output (which the model is then forced to commit to on its next prediction pass).
