@@ -1,7 +1,17 @@
 body{
-    background: #c9c9c9;
+  animation-name: colorCycle;
+  animation-duration: 10s; /* Adjust the time for faster or slower transitions */
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
 }
 
+@keyframes colorCycle {
+  0%   { background-color: rgb(218, 208, 208); }
+  25%  { background-color: rgb(194, 194, 219); }
+  50%  { background-color: rgb(203, 219, 203); }
+  75%  { background-color: rgb(214, 214, 200); }
+  100% { background-color: rgb(218, 208, 208); }
+}
 .experiment_name {
     font-size: 2em;
     font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
@@ -27,6 +37,13 @@ border: 2px solid #ddd; /* Custom radio border */
 border-radius: 15px; /* Rounded corners for the label */
 position: relative; /* To position the pseudo-elements */
 text-align: right; /* Right justify the text */
+}
+
+label {
+  animation-name: colorCycle;
+  animation-duration: 10s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
 }
 
 /* Pseudo-element for custom radio appearance */
