@@ -10,3 +10,4 @@ experiments/**/*.png
 /build
 /DRUGS.egg-info
 total_mess/*
+samplegen_nod.py

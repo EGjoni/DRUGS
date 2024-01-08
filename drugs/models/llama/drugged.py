@@ -1,7 +1,3 @@
-"""
-Adapted from https://github.com/mit-han-lab/streaming-llm
-"""
-
 from drugs.models.llama.attention_imports import *
 
 

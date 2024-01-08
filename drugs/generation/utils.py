@@ -54,19 +54,16 @@ def get_perturbed_vectors(input_vectors, max_theta_radians):
         middleschool trig rotation in n-dimensional space
         max_theta_radians : defines the maximum angle in radians to rotate input vectors by in a random direction.
     """
-    if max_theta_radians == 0:
-        return torch.clone(input_vectors)
-    eps = torch.finfo(input_vectors.dtype).eps
     random_angles = torch.rand_like(input_vectors[:,:,:,0], device=input_vectors.device, dtype=input_vectors.dtype) * max_theta_radians
     #The next three lines are an old family recipe for cooking up orthogonal vectors.
     random_vectors = torch.rand_like(input_vectors)
-    projections = (torch.sum(random_vectors * input_vectors, dim=-1, keepdim=True) / torch.sum(input_vectors * input_vectors, dim=-1, keepdim=True)) * input_vectors
+    projections = input_vectors * (torch.sum(random_vectors * input_vectors, dim=-1, keepdim=True) / 
+                   torch.sum(input_vectors * input_vectors, dim=-1, keepdim=True))
     orthoshifts = random_vectors - projections
     #Delicious. Now sprinkle generously and knead them back into our base vectors
-    input_shifts = input_vectors * torch.cos(random_angles).unsqueeze(-1)
-    target_shift_magnitudes = torch.sin(random_angles).unsqueeze(-1) * torch.norm(input_vectors, dim=-1, keepdim=True)
-    target_shifts = orthoshifts / torch.norm(orthoshifts, dim=-1, keepdim=True).clamp_min(eps) * target_shift_magnitudes.clamp_min(eps)
-    results = input_shifts + target_shifts
+    target_shifts = (torch.norm(input_vectors, dim=-1, keepdim=True) 
+                    * (orthoshifts / torch.norm(orthoshifts, dim=-1, keepdim=True)))
+    results = (input_vectors * torch.cos(random_angles).unsqueeze(-1)) + (target_shifts * torch.sin(random_angles).unsqueeze(-1))
     return results
 
 #for validation
