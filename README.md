@@ -123,20 +123,22 @@ A fully sober model predicts the most likely next token is "energy". If we store
 
 https://github.com/EGjoni/DRUGS/assets/1353635/f43654d7-9ff8-4308-baef-5209e9d6e5f0
 
+[Explore this graph here!](https://egjoni.github.io/DRUGS/experiments/vergence_plots/Hamilton_K_dose/single_layer_K_cosine/animated/interactive.html)
 
 https://github.com/EGjoni/DRUGS/assets/1353635/5b8e1fe9-c9a9-4b81-85fa-d0878f928298
 
 
-
 https://github.com/EGjoni/DRUGS/assets/1353635/f7a718dc-c9c4-41ae-a101-996c4c78c9ae
 
+[Explore this graph here!](https://egjoni.github.io/DRUGS/experiments/vergence_plots/Hamilton_A_dose/single_layer_A_cosine/animated/interactive.html)
 
 
 https://github.com/EGjoni/DRUGS/assets/1353635/09f5c694-91da-48a0-ae9e-a29c9b46b478
 
+[Explore this graph here!](https://egjoni.github.io/DRUGS/experiments/vergence_plots/Hamilton_A_dose/fullstack_A_cosine/animated/interactive.html)
 
 
-(Interactive versions of these graphs, as well as ones for Q and V dosages are available as .html files in the `experiments/vergence_plots/Hamilton_*` directory of this repo)
+(Interactive versions of these graphs are also available for Q and V dosages, just replace the corresponding letters in the URL)
 
 To clarify these graphs:
 The prediction texts on the top right correspond solely to a (quite high) dosage theta of 0.7. The predictions listed are the top 10 most likely as per the sober model. The `|||` bars indicate likelihood as per the DRµGS augmented model, turning into `-` to indcate how far they fall short of the baseline prediction, or `+` to indicate how much they exceed the baseline prediction.
