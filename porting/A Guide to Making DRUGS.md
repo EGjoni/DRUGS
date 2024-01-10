@@ -18,7 +18,7 @@ But there are a few things to consider:
 ------------
  ### 1. Bringing the Noise
 
-The canonical **A**, **K**, **Q**, **V**, **H** drugs implemented in the base library all apply uniformly distributed noise as *rotation angles* (hence the 'theta' in `dose_theta`). Rotations in 128 dimensional space might seem daunting if you've ever tried to do them in 3 dimensional space, but they're actually not that bad. Here's how I do it:
+The canonical **A**, **K**, **Q**, **V**, **H** DRµGS implemented in the base library all apply uniformly distributed noise as *rotation angles* (hence the 'theta' in `dose_theta`). Rotations in 128 dimensional space might seem daunting if you've ever tried to do them in 3 dimensional space, but they're actually not that bad. Here's how I do it:
 
 ```python
 def get_perturbed_vectors(input_vectors, max_theta_radians):
@@ -92,7 +92,7 @@ But beyond that, transformers are eerily robust to perturbation, so you have a l
 
 For reasons of sheer paranoia, the official library avoids adding noise to the first 6 vectors in the context (because that's where the attention sink lives), but other than that, if you think there's an interesting place to inject noise, or conditionally protect from noise, or whatever it is teenagers are doing nowadays, I encourage you to try it out and share your findings.
 
-For reference, here is the current DRµGS implementation or Llama models (very lightly abbreviated for clarity):
+For reference, here is the an annotated (and very lightly abbreviated for clarity) version of the current DRµGS implementation for Llama models :
 
 ```python
 def llama_drugged_attention_forward(
@@ -102,7 +102,9 @@ def llama_drugged_attention_forward(
         sink_protect = (position_ids < 6).sum().item()
         if self.heroine_theta > 0:
             hidden_states[:,sink_protect:,:] = get_perturbed_vectors(hidden_states[:,sink_protect:,:].unsqueeze(0), self.heroine_theta).squeeze(0)
-            
+```
+Above, only the last two lines are the only new ones. These correspond to **H** noise injection. The variable being checked is set per decoder layer by the `DRUGS` class any time a change is made to `dose_shape` or `dose_theta`.
+```python
         query_states = self.q_proj(hidden_states)
         key_states = self.k_proj(hidden_states)
         value_states = self.v_proj(hidden_states)
@@ -116,7 +118,10 @@ def llama_drugged_attention_forward(
         
         if self.quaalude_theta > 0:
             query_states[:,:,sink_protect:, :] = get_perturbed_vectors(query_states[:,:,sink_protect:,:], self.quaalude_theta)
-
+```
+	Again, the only two new lines are the last two, following all the same rules as before. This corresponds to ***Q** noise. The `sink_protect` thing is optional, and is a variable currently hardcoded to 6. I haven't tested much what sorts of effects you'd get by setting it to 0, but they might be interesting.
+ 
+```python
         kv_seq_len = key_states.shape[-2]
         if past_key_value is not None:
             kv_seq_len += past_key_value.get_usable_length(kv_seq_len, self.layer_idx)
@@ -141,7 +146,9 @@ def llama_drugged_attention_forward(
         if self.valium_theta > 0:
             dvalue_states = torch.clone(value_states)
             dvalue_states[:,:,6:,:] = get_perturbed_vectors(value_states[:,:,6:,:], self.valium_theta)
-
+```
+Here, the last seven lines are new. Same reasoning as before. These correspond to **K** and **V** noise.
+```python
         attn_weights = torch.matmul(query_states, dkey_states.transpose(2, 3)) / math.sqrt(self.head_dim)
 		
         if attention_mask is not None:
@@ -152,13 +159,16 @@ def llama_drugged_attention_forward(
 
         if self.adderall_theta > 0:
             attn_output[:,:,sink_protect:, :] = get_perturbed_vectors(attn_output[:,:,sink_protect:, :], self.adderall_theta)
-
+```
+Here we have **A** noise, and below is just the rest of the forward pass code.  
+```
         attn_output = attn_output.transpose(1, 2).contiguous()
         attn_output = attn_output.reshape(bsz, q_len, self.hidden_size)
         attn_output = self.o_proj(attn_output)
 
         return attn_output, attn_weights, past_key_value
 ```
+And that's basically it.
 
 ------------
 
@@ -166,8 +176,8 @@ def llama_drugged_attention_forward(
 You'll note a couple of things about the code above.
 
 First, there's rather a lot of room for ambiguity and unease here. Specifically, how does this all play with position embedding schemes? Specifically, the ones that also rely on rotation of the *query* and *key* vectors.
-The answer to which is: I wish I fucking knew, man. In the platonic ideal implementation, I'd like **Q** and **K** noise to be applied prior to any position embedding scheme. But the Huggingface transformers library was not receptive to one of those ideas, so the canonical is **K** DRµG type is applied after position embedding, and as far as I can tell, it works just fine. So I guess, yet again with this library, as in life, there's just no wrong way to make DRµGS.
-You are wholly encouraged to try designing **pQ** and **pK** DRµG type variants in which noise is applied prior to the position embedding if your framework is more amenable than mine.
+The answer to which is: I wish I fucking knew, man. In the platonic ideal implementation, I'd like both **Q** and **K** noise to be applied prior to any position embedding scheme. But the Huggingface transformers library was not receptive to one of those ideas, so the canonical is **K** DRµG type is applied after position embedding, and as far as I can tell, it works just fine. So I guess, yet again with this library, as in life, there's just no wrong way to make DRµGS.
+You are wholly encouraged to try designing a **pK** DRµG type variants in which noise is applied prior to the position embedding if your framework is more amenable than mine.
 
 Second, there's a lot of references to the kv cache. Which might get pretty bad in theory. Since each decoder block caches the key and value from the hidden state generated by the previous block, which we added noise to. And so the sequence vector for token 12 at block 10 may have been conditioned on noised tokens 6-11 on the first pass. Then on the second pass, token 13 at block 10 is conditioned on noised tokens 6-12, but 12 was already itself conditioned on noise, so we're doubling up noise on top of noise. And then on the third pass it's noise on top of noise on top of noise.
 
