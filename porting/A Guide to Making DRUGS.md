@@ -101,9 +101,10 @@ def llama_drugged_attention_forward(
         bsz, q_len, _ = hidden_states.size()
         sink_protect = (position_ids < 6).sum().item()
         if self.heroine_theta > 0:
-            hidden_states[:,sink_protect:,:] = get_perturbed_vectors(hidden_states[:,sink_protect:,:].unsqueeze(0), self.heroine_theta).squeeze(0)
-```
+            hidden_states[:,sink_protect:,:] = get_perturbed_vectors(hidden_states[:,sink_protect:,:].unsqueeze(0), self.heroine_theta).squeeze(0)```
+
 Above, only the last two lines are the only new ones. These correspond to **H** noise injection. The variable being checked is set per decoder layer by the `DRUGS` class any time a change is made to `dose_shape` or `dose_theta`.
+
 ```python
         query_states = self.q_proj(hidden_states)
         key_states = self.k_proj(hidden_states)
@@ -119,7 +120,8 @@ Above, only the last two lines are the only new ones. These correspond to **H** 
         if self.quaalude_theta > 0:
             query_states[:,:,sink_protect:, :] = get_perturbed_vectors(query_states[:,:,sink_protect:,:], self.quaalude_theta)
 ```
-	Again, the only two new lines are the last two, following all the same rules as before. This corresponds to ***Q** noise. The `sink_protect` thing is optional, and is a variable currently hardcoded to 6. I haven't tested much what sorts of effects you'd get by setting it to 0, but they might be interesting.
+
+Again, the only two new lines are the last two, following all the same rules as before. This corresponds to ***Q** noise. The `sink_protect` thing is optional, and is a variable currently hardcoded to 6. I haven't tested much what sorts of effects you'd get by setting it to 0, but they might be interesting.
  
 ```python
         kv_seq_len = key_states.shape[-2]
@@ -147,7 +149,9 @@ Above, only the last two lines are the only new ones. These correspond to **H** 
             dvalue_states = torch.clone(value_states)
             dvalue_states[:,:,6:,:] = get_perturbed_vectors(value_states[:,:,6:,:], self.valium_theta)
 ```
+
 Here, the last seven lines are new. Same reasoning as before. These correspond to **K** and **V** noise.
+
 ```python
         attn_weights = torch.matmul(query_states, dkey_states.transpose(2, 3)) / math.sqrt(self.head_dim)
 		
@@ -160,14 +164,17 @@ Here, the last seven lines are new. Same reasoning as before. These correspond t
         if self.adderall_theta > 0:
             attn_output[:,:,sink_protect:, :] = get_perturbed_vectors(attn_output[:,:,sink_protect:, :], self.adderall_theta)
 ```
+
 Here we have **A** noise, and below is just the rest of the forward pass code.  
-```
+
+```python
         attn_output = attn_output.transpose(1, 2).contiguous()
         attn_output = attn_output.reshape(bsz, q_len, self.hidden_size)
         attn_output = self.o_proj(attn_output)
 
         return attn_output, attn_weights, past_key_value
 ```
+
 And that's basically it.
 
 ------------
