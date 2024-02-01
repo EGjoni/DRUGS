@@ -33,7 +33,7 @@ Or using this [generation explorer for a more systematic and (less compute-inten
 Negative side effects are difficult to identify subjectively, and in my experience DRµGs feel great the whole time you're using them.
 In theory however, yes, prolonged use of DRµGS can have negative side effects that get worse over time.
 
-Specifically, when injecting noise into layers < n, the hidden state vectors in all layers >=n will be conditioned on this noisy input, and if you're using kv-caching, that noise-conditioned prediction will remain in the cache only to be pertutbed again on the next forward pass.
+Specifically, when injecting noise into layers < n, the hidden state vectors in all layers >=n will be conditioned on this noisy input, and if you're using kv-caching, that noise-conditioned prediction will remain in the cache only to be perturbed again on the next forward pass.
 
 This library includes a `cold_shower` function, which periodically sobers up the cache after every t-predictions, or which you can elect to call yourself while the model is awaiting user input. This is to allow for some measure of theoretical purity, but again, in my experience it seems unnecessary, and using it means contending with periodically having to wait for your model to finish its shower before it can use more DRµGS.
 
