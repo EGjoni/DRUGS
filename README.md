@@ -1,7 +1,16 @@
+
+
+https://github.com/EGjoni/DRUGS/assets/1353635/2165d1d8-c463-4133-9847-38caa0cd8868
+
+##### [New: Click here for an interactive version of the video above.](https://egjoni.github.io/DRUGS/sample_generations/)
+#### [NEW: Are you interested in distributing DRµGS? Click here to read the porting guide!](https://github.com/EGjoni/DRUGS/blob/main/porting/A%20Guide%20to%20Making%20DRUGS.md)
+
+------------
 # DRµGS
 ### Stop messing around with sampling parameters and just use DRµGS!
+
 This repo introduces Deep Random Micro-Glitch Sampling (DRµGS).
-#### [NEW: Are you interested in distributing DRµGS? Click here to read the porting guide!](https://github.com/EGjoni/DRUGS/blob/main/porting/A%20Guide%20to%20Making%20DRUGS.md)
+
 
 ## The Problem:
 At a high level, the generative modeling landscape looks like first spending millions of dollars pretraining a giant model to predict the collective works of humanity, then giving those predictions to a dumb-as-rocks random number generator to kindly take into consideration in its role as the final arbiter over the multi-million dollar model's canonical output (which the model is then forced to commit to on its next prediction pass).
@@ -11,13 +20,8 @@ This is kinda nuts.
 ## The Solution:
 DRµGS just inverts this scheme. Instead of using noise to sample from the model's predictions, DRµGS injects noise directly into the transformer layers at inference time, thereby varying what the model predicts. From here, simply selecting the most likely prediction is often enough to increase output variety while maintaining coherence.
 
-Intuitively, the primary advantage of this scheme (though there's more than one) is that the model has ample opportunity in its later layers to correct or account for our perturbations in its earlier layers.
+Intuitively, the primary advantage of this scheme is that the model has ample opportunity in its later layers to correct or account for our perturbations in its earlier layers.
 
-------------
-
-https://github.com/EGjoni/DRUGS/assets/1353635/2165d1d8-c463-4133-9847-38caa0cd8868
-
-##### [New: Click here for an interactive version of the video above.](https://egjoni.github.io/DRUGS/sample_generations/)
 
 ------------
 
@@ -101,7 +105,7 @@ For more examples, take a look at `just_chat.ipynb`
 
 ### What is a reasonable dose of DRµGS?
 
-The `dose_theta`` parameter basically just defines a maximum angle in radians by which to randomly rotate the A, Q, K, V or H vectors. You probably shouldn't go past 0.1, but this kind of depends on the DRµG type and injection sites.
+The `dose_theta`` parameter defines a maximum angle in radians by which to randomly rotate the A, Q, K, V or H vectors. You probably shouldn't go past 0.1, but this kind of depends on the DRµG type and injection sites.
 
 This is also kind of where things get interesting. Consider the following starting prompt:
 
@@ -146,13 +150,13 @@ https://github.com/EGjoni/DRUGS/assets/1353635/09f5c694-91da-48a0-ae9e-a29c9b46b
 (Interactive versions of these graphs are also available for Q and V dosages, just replace the corresponding letters in the URL)
 
 To clarify these graphs:
-The prediction texts on the top right correspond solely to a (quite high) dosage theta of 0.7. The predictions listed are the top 10 most likely as per the sober model. The `|||` bars indicate likelihood as per the DRµGS augmented model, turning into `-` to indcate how far they fall short of the baseline prediction, or `+` to indicate how much they exceed the baseline prediction.
-Each video frame shows a different range of layers into which noise is being injected (as indicarted by the graph title at that frame)
+The prediction texts on the top right correspond solely to a (quite high) dose theta of 0.7. The predictions listed are the top 10 most likely as per the sober model. The `|||` bars indicate likelihood as per the DRµGS augmented model, turning into `-` to indcate how far they fall short of the baseline prediction, or `+` to indicate how much they exceed the baseline prediction.
+Each video frame shows a different range of layers into which noise is being injected (as indicated by the graph title at that frame)
 The horizontal axis shows the layer at which divergence is being measured.
 The vertical axis shows the degree of divergence at that layer.
 And the remaining axis shows the dose theta that was used to cause that degree of divergence.
 
-It might be a bit much to grok at a glance, but once you've wrapped your head around it, a few things might immediately stand out. 
+After you've groked it, a few things might immediately stand out. 
 
 First, we can add quite a lot of noise in earlier layers and the model very quickly drowns that noise out with its own signal. (This is likely part of why franken-merges work so well. It's not just that the residual stream keeps values in a reasonable region to avoid too much harm, it seem to be also that each layer of the model actively wants to push its inputs into something it can make sense of).
 
